@@ -1,6 +1,6 @@
-﻿@*<input type="checkbox" @bind="displayButtons" />
+﻿@*<input type="checkbox" @bind="displayButtons" />*@
 
-<GenericList List="Movies">
+@*<GenericList List="Movies">
     <ElementTemplate Context="movie">
         <IndividualMovie Movie="movie" DisplayButtons="displayButtons"
                          DeleteMovie="DeleteMovie" />
@@ -17,10 +17,12 @@ else if (Movies?.Count == 0)
 }
 else
 {
+    <input type="checkbox" @bind="displayButtons" />
+
     <div>
         @foreach (var movie in Movies!)
         {
-            <IndividualMovie Movie="movie"/>
+            <IndividualMovie Movie="movie" DisplayButtons="displayButtons" />
         }
     </div>
 }
