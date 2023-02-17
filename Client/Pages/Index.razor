@@ -23,26 +23,32 @@
     <p>Release Date: @spidermanMovie.ReleaseDate.ToString("dd MM yyyy")</p>
 </div>
 
-<div>
-    <h2>Movies:</h2>
-    @foreach (var movie in movies)
-    {
-        <p>Title: <b>@movie.Title</b></p>
-        <p>Release Date: @movie.ReleaseDate.ToString("dd MM yyyy")</p>
-    }
-</div>
 
-
-<div>
-    <h2>Movies:</h2>
-    @for (int i = 0; i < movies.Count; i++)
-    {
-        <div style="background-color: @(i % 2 == 0 ? "blue" : "red")">
-            <p>@(i+1)) Title: <b>@movies[i].Title</b></p>
-            <p>Release Date: @movies[i].ReleaseDate.ToString("dd MM yyyy")</p>
-        </div>
-    }
-</div>
+@if (movies.Count == 0)
+{
+    <h3>Loading...</h3>
+}
+else
+{
+    <div>
+        <h2>Movies:</h2>
+        @foreach (var movie in movies)
+        {
+            <p>Title: <b>@movie.Title</b></p>
+            <p>Release Date: @movie.ReleaseDate.ToString("dd MM yyyy")</p>
+        }
+    </div>
+    <div>
+        <h2>Movies (For Loop):</h2>
+        @for (int i = 0; i < movies.Count; i++)
+        {
+            <div style="background-color: @(i % 2 == 0 ? "blue" : "red")">
+                <p>@(i+1)) Title: <b>@movies[i].Title</b></p>
+                <p>Release Date: @movies[i].ReleaseDate.ToString("dd MM yyyy")</p>
+            </div>
+        }
+    </div>
+}
 
 @code {
     string name = "eric ";
@@ -53,10 +59,12 @@
         ReleaseDate = new DateTime(2019, 7, 2)
     };
 
-    List<Movie> movies;
+    List<Movie> movies = new();
 
-    protected override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
+        await Task.Delay(TimeSpan.FromSeconds(3));
+
         movies = new()
         {
             new Movie { Title = "Moana", ReleaseDate = new DateTime(2016, 11, 23) },
