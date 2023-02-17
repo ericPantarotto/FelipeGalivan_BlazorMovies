@@ -1,85 +1,11 @@
-﻿@page "/"
+﻿
+@page "/"
 @using BlazorMovies.Client.Helpers
 
-<PageTitle>Index</PageTitle>
 
-<h4>Hello, @name.ToUpper()!</h4>
-
-<h4>Hello, @CustomToUpper("julia")!</h4>
-
-<p>Let's add 2 + 2 = @(2+2)</p>
-
-<button @onclick="@(() => Console.WriteLine("I have been clicked!"))">Click Me!</button>
-
-<button @onclick="@WriteInLog">Click Me! (Method)</button>
-
-<h4>Hello, @StringUtilities.CustomToLower("RAVINSTARA")!</h4>
-
-<h4>Hello, @StringUtilitiesHelper.CustomToLower("FROM THE CLASS")!</h4>
-
-<div>
-    <h2>Movie</h2>
-    <p>Title: <b>@spidermanMovie.Title</b></p>
-    <p>Release Date: @spidermanMovie.ReleaseDate.ToString("dd MM yyyy")</p>
-</div>
-
-
-@if (movies.Count == 0)
-{
-    <h3>Loading...</h3>
-}
-else
-{
-    <div>
-        <h2>Movies:</h2>
-        @foreach (var movie in movies)
-        {
-            <p>Title: @((MarkupString)@movie.Title)</p>
-            <p>Release Date: @movie.ReleaseDate.ToString("dd MM yyyy")</p>
-        }
-    </div>
-    <div>
-        <h2>Movies (For Loop):</h2>
-        @for (int i = 0; i < movies.Count; i++)
-        {
-            <div style="background-color: @(i % 2 == 0 ? "blue" : "red")">
-                <p>@(i+1)) Title: @((MarkupString)@movies[i].Title)</p>
-                <p>Release Date: @movies[i].ReleaseDate.ToString("dd MM yyyy")</p>
-            </div>
-        }
-    </div>
-}
+<MoviesList/>
 
 @code {
-    string name = "eric ";
-
-    Movie spidermanMovie = new()
-    {
-        Title = "Spider-Man: Far From Home",
-        ReleaseDate = new DateTime(2019, 7, 2)
-    };
-
-    List<Movie> movies = new();
-
-    protected async override Task OnInitializedAsync()
-    {
-        await Task.Delay(TimeSpan.FromSeconds(3));
-
-        movies = new()
-        {
-            new Movie { Title = "<b>Moana</b>", ReleaseDate = new DateTime(2016, 11, 23) },
-            new Movie { Title = "<i>Inception</i>", ReleaseDate = new DateTime(2010, 07, 16) },
-            new Movie {Title = "Spider-Man: Far From Home", ReleaseDate = new DateTime(2019, 7, 2)}
-        };
-    }
-
-    string CustomToUpper(string value) => value.ToUpper();
-
-    void WriteInLog() => Console.WriteLine("I have been clicked from a Method!");
-
-    internal  class StringUtilities
-    {
-        internal static string CustomToLower(string value) => value.ToLower();
-    }
+   
 
 } 
