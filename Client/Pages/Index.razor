@@ -1,9 +1,43 @@
 ﻿@page "/"
+@using BlazorMovies.Client.Helpers
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<h4>Hello, @name.ToUpper()!</h4>
 
-Welcome to your new app.
+<h4>Hello, @CustomToUpper("julia")!</h4>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<p>Let's add 2 + 2 = @(2+2)</p>
+
+<button @onclick="@(() => Console.WriteLine("I have been clicked!"))">Click Me!</button>
+
+<button @onclick="@WriteInLog">Click Me! (Method)</button>
+
+<h4>Hello, @StringUtilities.CustomToLower("RAVINSTARA")!</h4>
+
+<h4>Hello, @StringUtilitiesHelper.CustomToLower("FROM THE CLASS")!</h4>
+
+<div>
+    <h2>Movie</h2>
+    <p>Title: <b>@spidermanMovie.Title</b></p>
+    <p>Release DateL @spidermanMovie.ReleaseDate.ToString("dd MM yyyy")</p>
+</div>
+
+@code {
+    string name = "eric ";
+
+    string CustomToUpper(string value) => value.ToUpper();
+
+    void WriteInLog() => Console.WriteLine("I have been clicked from a Method!");
+
+    internal  class StringUtilities
+    {
+        internal static string CustomToLower(string value) => value.ToLower();
+    }
+
+    Movie spidermanMovie = new()
+    {
+        Title = "Spider-Man: Far From Home",
+        ReleaseDate = new DateTime(2019, 7, 2)
+    };
+} 
