@@ -1,11 +1,35 @@
 ﻿
 @page "/"
-@using BlazorMovies.Client.Helpers
 
+<MoviesList Movies="movies"/>
 
-<MoviesList/>
+<DummyTextbox placeholder="movie name" disabled="true"/>
+
+<DummyTextbox @attributes= "@(new Dictionary<string, object>() {
+    {"placeholder", "new movie"},
+    {"disabled", "true"},
+    } )" />
+
+<DummyTextbox @attributes="@dummyTextboxParameter" />
 
 @code {
-   
+    private List<Movie>? movies;
+
+    private Dictionary<string, object> dummyTextboxParameter = new()
+    {
+        {"placeholder", "new movie from var"},
+        {"disabled", "true"},
+    };
+
+    protected override void OnInitialized()
+    {
+        movies = new()
+        {
+            new Movie { Title = "Moana", ReleaseDate = new DateTime(2016, 11, 23) },
+            new Movie { Title = "Inception", ReleaseDate = new DateTime(2010, 07, 16) },
+            new Movie {Title = "Spider-Man: Far From Home", ReleaseDate = new DateTime(2019, 7, 2)}
+        };
+    }
+
 
 } 

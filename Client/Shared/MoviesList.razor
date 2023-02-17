@@ -7,39 +7,27 @@
     </ElementTemplate>
 </GenericList>*@
 
-@if (movies is null)
+@if (Movies is null)
 {
     <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921" />
 }
-else if (movies?.Count == 0)
+else if (Movies?.Count == 0)
 {
     <h3>There are no records to show ...</h3>
 }
 else
 {
     <div>
-        <h2>Movies:</h2>
-        @foreach (var movie in movies!)
+        @foreach (var movie in Movies!)
         {
-            <p>Title: @movie.Title</p>
-            <p>Release Date: @movie.ReleaseDate.ToString("dd MM yyyy")</p>
-        }
-    </div>
-    <div>
-        <h2>Movies (For Loop):</h2>
-        @for (int i = 0; i < movies.Count; i++)
-        {
-            <div style="background-color: @(i % 2 == 0 ? "blue" : "red")">
-                <p>@(i + 1)) Title: @movies[i].Title</p>
-                <p>Release Date: @movies[i].ReleaseDate.ToString("dd MM yyyy")</p>
-            </div>
+            <IndividualMovie Movie="movie"/>
         }
     </div>
 }
 
 @code {
-    //[Parameter] public List<Movie> Movies { get; set; }
-    public List<Movie>? movies { get; set; }
+    [Parameter] public List<Movie>? Movies { get; set; }
+    //public List<Movie>? movies { get; set; }
 
     bool displayButtons = true;
 
@@ -49,18 +37,6 @@ else
     //    Movies.Remove(movie);
     //}
 
-
-    protected override async Task OnInitializedAsync()
-    {
-        await Task.Delay(TimeSpan.FromSeconds(4));
-
-        movies = new()
-        {
-            new Movie { Title = "Moana", ReleaseDate = new DateTime(2016, 11, 23) },
-            new Movie { Title = "Inception", ReleaseDate = new DateTime(2010, 07, 16) },
-            new Movie {Title = "Spider-Man: Far From Home", ReleaseDate = new DateTime(2019, 7, 2)}
-        };
-    }
 
     //protected override void OnInitialized()
     //{
