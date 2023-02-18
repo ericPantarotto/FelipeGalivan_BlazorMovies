@@ -9,11 +9,26 @@
 
 @if (Movies is null)
 {
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921" />
+    if (NullTemplate is null)
+    {
+        <img src = "https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921" />
+    }
+    else
+    {
+        @NullTemplate;
+    }
 }
 else if (Movies?.Count == 0)
 {
-    <h3>There are no records to show ...</h3>
+    if (EmptTemplate is null)
+    {
+        <h3> There are no records to show...</h3>
+    }
+    else
+    {
+        @EmptTemplate;
+    }
+    
 }
 else
 {
@@ -22,22 +37,25 @@ else
     <div>
         @foreach (var movie in Movies!)
         {
-            <IndividualMovie Movie="movie" DisplayButtons="displayButtons" />
+            <IndividualMovie Movie="movie" DisplayButtons="displayButtons"
+                DeleteMovie="DeleteMovie"/>
         }
     </div>
 }
 
 @code {
     [Parameter] public List<Movie>? Movies { get; set; }
-    //public List<Movie>? movies { get; set; }
+
+    [Parameter] public RenderFragment? NullTemplate { get; set; }
+    [Parameter] public RenderFragment? EmptTemplate { get; set; }
 
     bool displayButtons = true;
 
     //Movie movieToBeDeleted;
-    //private async Task DeleteMovie(Movie movie)
-    //{
-    //    Movies.Remove(movie);
-    //}
+    private void DeleteMovie(Movie movie)
+    {
+        Movies?.Remove(movie);
+    }
 
 
     //protected override void OnInitialized()

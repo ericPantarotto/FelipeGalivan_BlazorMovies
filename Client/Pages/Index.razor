@@ -1,16 +1,17 @@
 ﻿
 @page "/"
 
-<MoviesList Movies="movies"/>
-
-<DummyTextbox placeholder="movie name" disabled="true"/>
-
-<DummyTextbox @attributes= "@(new Dictionary<string, object>() {
-    {"placeholder", "new movie"},
-    {"disabled", "true"},
-    } )" />
-
-<DummyTextbox @attributes="@dummyTextboxParameter" />
+<div>
+    <h3>Movie</h3>
+    <MoviesList Movies="movies">
+        <NullTemplate>
+            <span style="color: red">This is loading ...</span>
+        </NullTemplate>
+        <EmptTemplate>
+            <span style="color: blue">No Record to see ...</span>
+        </EmptTemplate>
+    </MoviesList>
+</div>
 
 @code {
     private List<Movie>? movies;
@@ -23,12 +24,12 @@
 
     protected override void OnInitialized()
     {
-        movies = new()
-        {
-            new Movie { Title = "Moana", ReleaseDate = new DateTime(2016, 11, 23) },
-            new Movie { Title = "Inception", ReleaseDate = new DateTime(2010, 07, 16) },
-            new Movie {Title = "Spider-Man: Far From Home", ReleaseDate = new DateTime(2019, 7, 2)}
-        };
+        //movies = new()
+        //{
+        //    new Movie { Title = "Moana", ReleaseDate = new DateTime(2016, 11, 23) },
+        //    new Movie { Title = "Inception", ReleaseDate = new DateTime(2010, 07, 16) },
+        //    new Movie {Title = "Spider-Man: Far From Home", ReleaseDate = new DateTime(2019, 7, 2)}
+        //};
     }
 
 
