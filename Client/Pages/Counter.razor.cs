@@ -6,8 +6,8 @@ namespace BlazorMovies.Client.Pages
 {
     public partial class Counter
     {
-        [Inject] SingletonService singleton { get; set; }
-        [Inject] TransientService transient { get; set; }
+        [Inject] SingletonService? singleton { get; set; }
+        [Inject] TransientService? transient { get; set; }
         //[Inject] IJSRuntime js { get; set; }
         //[CascadingParameter] public AppState AppState { get; set; }
 
@@ -26,8 +26,8 @@ namespace BlazorMovies.Client.Pages
         private void IncrementCount()
         {
             currentCount++;
-            singleton.Value += 1;
-            transient.Value += 1;
+            singleton!.Value += 1;
+            transient!.Value += 1;
         }
 
         //[ JSInvokable]

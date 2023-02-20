@@ -1,4 +1,7 @@
-﻿<input type="checkbox" @bind="displayButtons" />
+﻿@using BlazorMovies.Client.Helpers;
+@inject IJSRuntime js
+
+<input type="checkbox" @bind="displayButtons" />
 
 <GenericList List="Movies" NullTemplate="NullTemplate" EmptyTemplate="EmptyTemplate">
     <ElementTemplate Context="movie">
@@ -15,10 +18,17 @@
 
     bool displayButtons = true;
 
-    //Movie movieToBeDeleted;
-    private void DeleteMovie(Movie movie)
+    private async Task DeleteMovie(Movie movie)
     {
-        Movies?.Remove(movie);
+        //var confirm = await js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete {movie.Title}?");
+        var confirm = await js.Confirm($"Are you sure you want to delete {movie.Title}?");
+        
+        await js.MyFunction("my cusom messagee");
+        
+        if (confirm)
+        {
+            Movies?.Remove(movie);
+        }
     }
 
 
