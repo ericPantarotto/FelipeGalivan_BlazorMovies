@@ -1,6 +1,4 @@
 ﻿@page "/counter"
- @inject SingletonService singleton
- @inject TransientService transient
 
 <PageTitle>Counter</PageTitle>
 
@@ -22,22 +20,3 @@
         </NullTemplate>*@
     </MoviesList>
 </div>
-
-@code {
-    private List<Movie>? movies;
-
-    private int currentCount = 0;
-
-    protected override async Task OnInitializedAsync()
-    {
-        await Task.Delay(TimeSpan.FromSeconds(3));
-        movies = new();
-    }
-
-    private void IncrementCount()
-    {
-        currentCount++;
-        singleton.Value += 1;
-        transient.Value += 1;
-    }
-}
