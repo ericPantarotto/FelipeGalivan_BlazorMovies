@@ -1,53 +1,17 @@
-﻿@*<input type="checkbox" @bind="displayButtons" />*@
+﻿<input type="checkbox" @bind="displayButtons" />
 
-@*<GenericList List="Movies">
+<GenericList List="Movies" NullTemplate="NullTemplate" EmptyTemplate="EmptyTemplate">
     <ElementTemplate Context="movie">
         <IndividualMovie Movie="movie" DisplayButtons="displayButtons"
                          DeleteMovie="DeleteMovie" />
     </ElementTemplate>
-</GenericList>*@
-
-@if (Movies is null)
-{
-    if (NullTemplate is null)
-    {
-        <img src = "https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921" />
-    }
-    else
-    {
-        @NullTemplate;
-    }
-}
-else if (Movies?.Count == 0)
-{
-    if (EmptTemplate is null)
-    {
-        <h3> There are no records to show...</h3>
-    }
-    else
-    {
-        @EmptTemplate;
-    }
-    
-}
-else
-{
-    <input type="checkbox" @bind="displayButtons" />
-
-    <div>
-        @foreach (var movie in Movies!)
-        {
-            <IndividualMovie Movie="movie" DisplayButtons="displayButtons"
-                DeleteMovie="DeleteMovie"/>
-        }
-    </div>
-}
+</GenericList>
 
 @code {
     [Parameter] public List<Movie>? Movies { get; set; }
 
     [Parameter] public RenderFragment? NullTemplate { get; set; }
-    [Parameter] public RenderFragment? EmptTemplate { get; set; }
+    [Parameter] public RenderFragment? EmptyTemplate { get; set; }
 
     bool displayButtons = true;
 

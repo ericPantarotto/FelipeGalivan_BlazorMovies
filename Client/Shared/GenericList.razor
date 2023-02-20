@@ -1,0 +1,39 @@
+﻿@typeparam TItem
+
+@if (List is null)
+{
+    @if (NullTemplate is null)
+    {
+        @*<img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" />*@
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921" />
+    }
+    else
+    {
+        @NullTemplate
+    }
+}
+else if (List.Count == 0)
+{
+    @if (EmptyTemplate is null)
+    {
+        <text>There are no records to show</text>
+    }
+    else
+    {
+        @EmptyTemplate
+    }
+}
+else
+{
+    @foreach (var element in List)
+    {            
+        @ElementTemplate!(element)
+    }
+}
+
+@code {
+    [Parameter] public RenderFragment? NullTemplate { get; set; }
+    [Parameter] public RenderFragment? EmptyTemplate { get; set; }
+    [Parameter] public RenderFragment<TItem>? ElementTemplate { get; set; }
+    [Parameter] public List<TItem>? List { get; set; }
+}

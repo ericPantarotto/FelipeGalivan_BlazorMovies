@@ -10,12 +10,25 @@
 
 <input type="number" @bind="currentCount" />
 
-<MoviesList Movies="movies"/>
+<div>
+    <h3>Movie</h3>  
+    <MoviesList Movies="movies">
+       @* <NullTemplate>
+            <span style="color: red">This is a schtrumpf ...</span>
+        </NullTemplate>*@
+    </MoviesList>
+</div>
 
 @code {
     private List<Movie>? movies;
 
     private int currentCount = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(TimeSpan.FromSeconds(3));
+        movies = new();
+    }
 
     private void IncrementCount()
     {

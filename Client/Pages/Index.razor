@@ -7,14 +7,14 @@
         <NullTemplate>
             <span style="color: red">This is loading ...</span>
         </NullTemplate>
-        <EmptTemplate>
+        <EmptyTemplate>
             <span style="color: blue">No Record to see ...</span>
-        </EmptTemplate>
+        </EmptyTemplate>
     </MoviesList>
 </div>
 
 @code {
-    private List<Movie>? movies;
+    private List<Movie>? movies = new();
 
     private Dictionary<string, object> dummyTextboxParameter = new()
     {
@@ -22,14 +22,15 @@
         {"disabled", "true"},
     };
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        //movies = new()
-        //{
-        //    new Movie { Title = "Moana", ReleaseDate = new DateTime(2016, 11, 23) },
-        //    new Movie { Title = "Inception", ReleaseDate = new DateTime(2010, 07, 16) },
-        //    new Movie {Title = "Spider-Man: Far From Home", ReleaseDate = new DateTime(2019, 7, 2)}
-        //};
+        await Task.Delay(TimeSpan.FromSeconds(3));
+        movies = new()
+        {
+            new Movie { Title = "moana", ReleaseDate = new DateTime(2016, 11, 23) },
+            new Movie { Title  = "inception", ReleaseDate  = new DateTime(2010, 07, 16) },
+            new Movie { Title  = "spider-man: far from home", ReleaseDate  = new DateTime(2019, 7, 2)}
+        };
     }
 
 
