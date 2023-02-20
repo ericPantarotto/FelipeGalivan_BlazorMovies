@@ -1,5 +1,5 @@
 ﻿<div>
-    <p>Title: @Movie?.Title</p>
+    <p>Title: @((MarkupString)@Movie?.Title!)</p>
     <p>Release Date: <b>@Movie?.ReleaseDate.ToString("dd MMM yyyy")</b></p>
     @if (DisplayButtons)
     {

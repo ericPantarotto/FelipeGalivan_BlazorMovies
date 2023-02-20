@@ -1,5 +1,6 @@
-﻿
-@page "/"
+﻿@page "/"
+@using BlazorMovies.Client.Helpers;
+@inject IRepository repository
 
 <div>
     <h3>Movie</h3>
@@ -25,12 +26,13 @@
     protected override async Task OnInitializedAsync()
     {
         await Task.Delay(TimeSpan.FromSeconds(3));
-        movies = new()
-        {
-            new Movie { Title = "moana", ReleaseDate = new DateTime(2016, 11, 23) },
-            new Movie { Title  = "inception", ReleaseDate  = new DateTime(2010, 07, 16) },
-            new Movie { Title  = "spider-man: far from home", ReleaseDate  = new DateTime(2019, 7, 2)}
-        };
+        //movies = new()
+        //{
+        //    new Movie { Title = "moana", ReleaseDate = new DateTime(2016, 11, 23) },
+        //    new Movie { Title  = "inception", ReleaseDate  = new DateTime(2010, 07, 16) },
+        //    new Movie { Title  = "spider-man: far from home", ReleaseDate  = new DateTime(2019, 7, 2)}
+        //};
+        movies = repository.GetMovies();
     }
 
 
