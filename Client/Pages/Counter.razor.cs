@@ -1,6 +1,6 @@
 ﻿using BlazorMovies.Shared.Entities;
 using Microsoft.AspNetCore.Components;
-//using Microsoft.JSInterop;
+using Microsoft.JSInterop;
 
 namespace BlazorMovies.Client.Pages
 {
@@ -8,51 +8,37 @@ namespace BlazorMovies.Client.Pages
     {
         [Inject] SingletonService? singleton { get; set; }
         [Inject] TransientService? transient { get; set; }
-        //[Inject] IJSRuntime js { get; set; }
+        [Inject] IJSRuntime? js { get; set; }
         //[CascadingParameter] public AppState AppState { get; set; }
 
         private int currentCount = 0;
-        //private static int currentCountStatic = 0;
+        private static int currentCountStatic = 0;
         //IJSObjectReference module;
 
-        private List<Movie>? movies;
 
-        protected override async Task OnInitializedAsync()
+        [JSInvokable]
+        public async Task IncrementCount()
         {
-            await Task.Delay(TimeSpan.FromSeconds(3));
-            movies = new();
-        }
+            //module = await js.InvokeAsync<IJSObjectReference>("import", "./js/Counter.js");
+            //await module.InvokeVoidAsync("displayAlert", "hello world");
 
-        private void IncrementCount()
-        {
             currentCount++;
             singleton!.Value += 1;
             transient!.Value += 1;
+            currentCountStatic++;
+            await js!.InvokeVoidAsync("dotnetStaticInvocation");
         }
 
-        //[ JSInvokable]
-        //public async Task IncrementCount()
-        //{
-        //    module = await js.InvokeAsync<IJSObjectReference>("import", "./js/Counter.js");
-        //    await module.InvokeVoidAsync("displayAlert", "hello world");
+        private async Task IncrementCountJavaScript()
+        {
+            await js!.InvokeVoidAsync("dotnetInstanceInvocation",
+                DotNetObjectReference.Create(this));
+        }
 
-        //    currentCount++;
-        //    singleton.Value += 1;
-        //    transient.Value += 1;
-        //    currentCountStatic++;
-        //    await js.InvokeVoidAsync("dotnetStaticInvocation");
-        //}
-
-        //private async Task IncrementCountJavaScript()
-        //{
-        //    await js.InvokeVoidAsync("dotnetInstanceInvocation",
-        //        DotNetObjectReference.Create(this));
-        //}
-
-        //[JSInvokable]
-        //public static Task<int> GetCurrentCount()
-        //{
-        //    return Task.FromResult(currentCountStatic);
-        //}
+        [JSInvokable]
+        public static Task<int> GetCurrentCount()
+        {
+            return Task.FromResult(currentCountStatic);
+        }
     }
 }

@@ -10,13 +10,6 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
-<input type="number" @bind="currentCount" />
+<button class="btn btn-primary" @onclick="IncrementCountJavaScript">Click me JavaScript</button>
 
-<div>
-    <h3>Movie</h3>  
-    <MoviesList Movies="movies">
-       @* <NullTemplate>
-            <span style="color: red">This is a schtrumpf ...</span>
-        </NullTemplate>*@
-    </MoviesList>
-</div>
+<input type="number" @bind="currentCount" />
