@@ -1,0 +1,12 @@
+﻿<img src="@Url" />
+
+
+@code {
+    [Parameter]
+    public string? Url { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine(Url);
+    }
+}

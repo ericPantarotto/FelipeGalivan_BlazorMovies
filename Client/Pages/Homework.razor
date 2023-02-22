@@ -1,0 +1,26 @@
+﻿@page "/homework"
+@inject HttpClient Http
+
+<h3>Homework : Image Component</h3>
+<input type="textbox" @bind="imageUrl" @bind:event="oninput" @onkeyup="ValidateURL">
+
+<div style="display:flex; justify-content: center; margin-bottom: 20px">
+    <Img Url="@imageUrlComponent" />
+</div>
+
+@code {
+    private const string defaultImage = "questionmark.png";
+    
+    private string imageUrl = string.Empty;
+    
+    private string imageUrlComponent = "questionmark.png";
+
+    private async Task ValidateURL()
+    {
+
+        HttpResponseMessage message = await Http.GetAsync(imageUrl);
+        string result = message.Content.ReadAsStringAsync().Result;
+
+        imageUrlComponent = (!string.IsNullOrEmpty(result) && result.Substring(2, 3) != "DOC") ? imageUrl : defaultImage;
+    }
+}
