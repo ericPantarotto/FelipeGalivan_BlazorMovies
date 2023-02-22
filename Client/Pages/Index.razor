@@ -1,6 +1,9 @@
 ﻿@page "/"
 @using BlazorMovies.Client.Helpers;
 @inject IRepository repository
+@inject SingletonService singleton
+
+<p style="color: @AppState.Color; font-size: @AppState.Size" role="status">Singleton count: @singleton?.Value</p>
 
 <div>
     <h3>Movie</h3>
@@ -15,6 +18,7 @@
 </div>
 
 @code {
+    [CascadingParameter] public AppState AppState { get; set; } = new();
     private MoviesList? moviesList;
     private List<Movie>? movies = new();
 

@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using BlazorMovies.Client.Helpers;
+@inherits LayoutComponentBase
 
 <div class="page">
     <div class="sidebar">
@@ -11,7 +12,13 @@
         </div>
 
         <article class="content px-4">
-            @Body
+            <CascadingValue Value="@appState">
+                @Body
+            </CascadingValue>
         </article>
     </main>
 </div>
+
+@code{
+    AppState appState = new();
+}

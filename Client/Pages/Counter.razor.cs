@@ -1,4 +1,6 @@
-﻿using BlazorMovies.Shared.Entities;
+﻿using BlazorMovies.Client.Helpers;
+using BlazorMovies.Client.Shared;
+using BlazorMovies.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -9,7 +11,7 @@ namespace BlazorMovies.Client.Pages
         [Inject] SingletonService? singleton { get; set; }
         [Inject] TransientService? transient { get; set; }
         [Inject] IJSRuntime? js { get; set; }
-        //[CascadingParameter] public AppState AppState { get; set; }
+        [CascadingParameter] public AppState AppState { get; set; } = new();
 
         private int currentCount = 0;
         private static int currentCountStatic = 0;
