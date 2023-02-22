@@ -10,7 +10,11 @@
     </ElementTemplate>
 </GenericList>
 
+<Confirmation @ref="confirmation" onCancel="onCancel" onConfirm="onConfirm">
+    <div>Do you wish to delete @((MarkupString)movieToBeDeleted?.Title!) ?</div>
+</Confirmation>
 @code {
+    Confirmation? confirmation;
     [Parameter] public List<Movie>? Movies { get; set; }
 
     [Parameter] public RenderFragment? NullTemplate { get; set; }
@@ -18,19 +22,29 @@
 
     bool displayButtons = true;
 
-    private async Task DeleteMovie(Movie movie)
+    Movie? movieToBeDeleted;
+    private void DeleteMovie(Movie movie)
     {
-        //var confirm = await js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete {movie.Title}?");
-        var confirm = await js.Confirm($"Are you sure you want to delete {movie.Title}?");
-        
-        await js.MyFunction("my cusom messagee");
-        
-        if (confirm)
-        {
-            Movies?.Remove(movie);
-        }
+        movieToBeDeleted = movie;
+        confirmation!.Show();
     }
 
+    private void onConfirm()
+    {
+        Movies?.Remove(movieToBeDeleted!);
+        confirmation?.Hide();
+        movieToBeDeleted = null;
+    }
+
+    private void onCancel()
+    {
+        confirmation?.Hide();
+        movieToBeDeleted = null;
+    }
+    public async Task Something()
+    {
+        await js.InvokeAsync<object>("console.log", "hello world console");
+    }
 
     protected override void OnInitialized()
     {
