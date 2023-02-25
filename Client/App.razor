@@ -1,4 +1,9 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@inject LazyAssemblyLoader lazyLoader
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using System.Reflection
+
+<Router AppAssembly="@typeof(App).Assembly" OnNavigateAsync="OnNavigateAsync"
+    AdditionalAssemblies="lazyLoadedAssemblies">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -10,3 +15,15 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    private List<Assembly> lazyLoadedAssemblies = new();
+
+    private async Task OnNavigateAsync(NavigationContext args) {
+        if (args.Path.EndsWith("counter")) {
+            var assemblies = await lazyLoader.LoadAssembliesAsync(
+                new List<string> { "MathNet.Numerics.dll" });
+            lazyLoadedAssemblies.AddRange(assemblies);
+        }
+    }
+}
