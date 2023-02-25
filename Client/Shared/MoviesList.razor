@@ -1,17 +1,17 @@
 ﻿@using BlazorMovies.Client.Helpers;
 @inject IJSRuntime js
 
+<div class="movies-container">
+    <GenericList List="Movies">
+        <ElementTemplate Context="movie">
+            <IndividualMovie Movie="movie" DeleteMovie="DeleteMovie" />
+        </ElementTemplate>
+    </GenericList>
+</div>
 
-<GenericList List="Movies">
-    <ElementTemplate Context="movie">
-        <IndividualMovie Movie="movie" DeleteMovie="DeleteMovie" />
-    </ElementTemplate>
-</GenericList>
 
 @code {
     [Parameter] public List<Movie>? Movies { get; set; }
-
-    bool displayButtons = true;
 
     private async Task DeleteMovie(Movie movie)
     {
