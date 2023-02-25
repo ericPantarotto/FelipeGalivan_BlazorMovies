@@ -1,40 +1,18 @@
 ﻿@page "/"
 @using BlazorMovies.Client.Helpers;
 @inject IRepository repository
-@inject SingletonService singleton
-
-<p style="color: @AppState.Color; font-size: @AppState.Size" role="status">Singleton count: @singleton?.Value</p>
 
 <div>
     <h3>Movie</h3>
-    <MoviesList @ref="moviesList" Movies="movies">
-        <NullTemplate>
-            <span style="color: red">This is loading ...</span>
-        </NullTemplate>
-        <EmptyTemplate>
-            <span style="color: blue">No Record to see ...</span>
-        </EmptyTemplate>
-    </MoviesList>
+    <MoviesList Movies="movies" />
 </div>
 
 @code {
-    [CascadingParameter] public AppState AppState { get; set; } = new();
-    private MoviesList? moviesList;
     private List<Movie>? movies = new();
 
-    private Dictionary<string, object> dummyTextboxParameter = new()
+    protected override void OnInitialized()
     {
-        {"placeholder", "new movie from var"},
-        {"disabled", "true"},
-    };
-
-    protected override async Task OnInitializedAsync()
-    {
-        await Task.Delay(TimeSpan.FromSeconds(3));
-
         movies = repository.GetMovies();
-
-        await moviesList!.Something();
     }
 
 

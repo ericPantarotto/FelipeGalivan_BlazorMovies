@@ -1,68 +1,26 @@
 ﻿@using BlazorMovies.Client.Helpers;
 @inject IJSRuntime js
 
-<input type="checkbox" @bind="displayButtons" />
 
-<GenericList List="Movies" NullTemplate="NullTemplate" EmptyTemplate="EmptyTemplate">
+<GenericList List="Movies">
     <ElementTemplate Context="movie">
-        <IndividualMovie Movie="movie" DisplayButtons="displayButtons"
-                         DeleteMovie="DeleteMovie" />
+        <IndividualMovie Movie="movie" DeleteMovie="DeleteMovie" />
     </ElementTemplate>
 </GenericList>
 
-<Confirmation @ref="confirmation" onCancel="onCancel" onConfirm="onConfirm">
-    <div>Do you wish to delete @((MarkupString)movieToBeDeleted?.Title!) ?</div>
-</Confirmation>
 @code {
-    Confirmation? confirmation;
     [Parameter] public List<Movie>? Movies { get; set; }
-
-    [Parameter] public RenderFragment? NullTemplate { get; set; }
-    [Parameter] public RenderFragment? EmptyTemplate { get; set; }
 
     bool displayButtons = true;
 
-    Movie? movieToBeDeleted;
-    private void DeleteMovie(Movie movie)
+    private async Task DeleteMovie(Movie movie)
     {
-        movieToBeDeleted = movie;
-        confirmation!.Show();
+        await js.MyFunction("custom message");
+        bool confirmed = await js.Confirm($"Are you sure you want to delete {movie.Title}?");
+        if (confirmed)
+        {
+            Movies?.Remove(movie);
+        }
     }
 
-    private void onConfirm()
-    {
-        Movies?.Remove(movieToBeDeleted!);
-        confirmation?.Hide();
-        movieToBeDeleted = null;
-    }
-
-    private void onCancel()
-    {
-        confirmation?.Hide();
-        movieToBeDeleted = null;
-    }
-    public async Task Something()
-    {
-        await js.InvokeAsync<object>("console.log", "hello world console");
-    }
-
-    protected override void OnInitialized()
-    {
-        Console.WriteLine($"OnInitialized. Movies.Count = {Movies?.Count.ToString()}");
-    }
-
-    protected override void OnParametersSet()
-    {
-        Console.WriteLine($"OnParametersSet. Movies.Count = {Movies?.Count.ToString()}");
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        Console.WriteLine($"OnAfterRender. FirstRender = {firstRender.ToString()    }");
-    }
-
-    protected override bool ShouldRender()
-    {
-        return true;
-    }
 }
