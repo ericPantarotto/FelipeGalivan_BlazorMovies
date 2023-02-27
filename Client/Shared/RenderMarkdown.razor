@@ -1,0 +1,23 @@
+﻿@using Markdig
+
+@if (HTMLContent is not null)
+{
+    @((MarkupString)HTMLContent)
+}
+
+@code {
+    [Parameter] public string MarkdownContent { get; set; } = string.Empty;
+    private string? HTMLContent;
+
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrEmpty(MarkdownContent))
+        {
+            HTMLContent = Markdown.ToHtml(MarkdownContent);
+        }
+        else
+        {
+            HTMLContent = null;
+        }
+    }
+}
