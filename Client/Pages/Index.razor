@@ -8,6 +8,12 @@
     <MoviesList Movies="movies" />
 </div>
 
+<CustomTypeahead SearchMethod="SearchMethod">
+    <ResultTemplate>
+        @context
+    </ResultTemplate>
+</CustomTypeahead>
+
 @code {
     private List<Movie>? movies = new();
 
@@ -16,5 +22,14 @@
         movies = repository.GetMovies();
     }
 
+    private async Task<IEnumerable<string>> SearchMethod(string searchText) {
+        await Task.Delay(TimeSpan.FromSeconds(1));
+
+        if ( searchText == "test") {
+            return Enumerable.Empty<string>();
+        }
+        
+        return new List<string>() { "Felipe", "Gavilanche" };
+    }
 
 } 
