@@ -6,6 +6,6 @@ namespace BlazorMovies.Shared.Entities {
         public int Id { get; set; }
         [Required(ErrorMessage = "The field name is required")]
         public string Name { get; set; } = string.Empty;
-        //public List<MoviesGenres> MoviesGenres { get; set; } = new List<MoviesGenres>();
+        public List<MoviesGenres> MoviesGenres { get; set; } = new ();
     }
 }

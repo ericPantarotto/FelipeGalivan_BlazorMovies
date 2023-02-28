@@ -1,4 +1,5 @@
-﻿<EditForm Model="Movie" OnValidSubmit="OnValidSubmit">
+﻿@using BlazorMovies.Client.Helpers;
+<EditForm Model="Movie" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <div class="form-group">
         <label>Title:</label>
@@ -39,25 +40,32 @@
                        For="@(() => Movie.Summary)" />
     </div>
 
+    <div class="form-group">
+        <label>Genres:</label>
+        <div>
+            <MultipleSelector Selected="Selected" NoSelected="NotSelected"></MultipleSelector>
+        </div>
+    </div>
+
     <button class="btn btn-primary" type="submit">Save Changes</button>
 </EditForm>
 
 @code {
     [Parameter] public Movie Movie { get; set; } = new();
     [Parameter] public EventCallback OnValidSubmit { get; set; }
-    [Parameter] public List<Genre> SelectedGenres { get; set; } = new List<Genre>();
-    //[Parameter] public List<Genre> NotSelectedGenres { get; set; } = new List<Genre>();
-    //[Parameter] public List<Person> SelectedActors { get; set; } = new List<Person>();
+    [Parameter] public List<Genre> SelectedGenres { get; set; } = new();
+    [Parameter] public List<Genre> NotSelectedGenres { get; set; } = new();
+    [Parameter] public List<Person> SelectedActors { get; set; } = new();
 
-    //private List<MultipleSelectorModel> Selected = new List<MultipleSelectorModel>();
-    //private List<MultipleSelectorModel> NotSelected = new List<MultipleSelectorModel>();
+    private List<MultipleSelectorModel> Selected = new();
+    private List<MultipleSelectorModel> NotSelected = new();
 
     private string? imageURL;
 
     protected override void OnInitialized()
     {
-        //Selected = SelectedGenres.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
-        //NotSelected = NotSelectedGenres.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
+        Selected = SelectedGenres.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
+        NotSelected = NotSelectedGenres.Select(x => new MultipleSelectorModel(x.Id.ToString(), x.Name)).ToList();
 
         if (!string.IsNullOrEmpty(Movie.Poster))
         {
