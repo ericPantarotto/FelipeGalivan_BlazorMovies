@@ -8,10 +8,13 @@
     <MoviesList Movies="movies" />
 </div>
 
-<CustomTypeahead SearchMethod="SearchMethod">
+<CustomTypeahead SearchMethod="SearchMethod" Context="testString">
     <ResultTemplate>
-        @context
+        @testString
     </ResultTemplate>
+    <NotFoundTemplate>
+        ❓
+    </NotFoundTemplate>
 </CustomTypeahead>
 
 @code {

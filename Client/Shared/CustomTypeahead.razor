@@ -27,6 +27,7 @@
                 <div @key="item" class="blazored-typeahead__result"
                     tabindex="0" @onclick="@(() => SelectSuggestion(item))"
                     @onmouseover="OnmouseoverSuggestion" @onmouseout="OnmouseoutSuggestion">
+                    
                     @(ResultTemplate!(item))
                 </div>
             }
@@ -72,9 +73,6 @@
         base.OnInitialized();
     }
 
-    private bool ShowNotFound() {
-        return !Suggestions.Any() && IsShowingSuggestions;
-    }
 
     private async Task SelectSuggestion(TItem item) {
         SearchText = "";
@@ -108,6 +106,10 @@
                 _debounceTimer?.Start();
             }
         }
+    }
+
+    private bool ShowNotFound() {
+        return !Suggestions.Any() && IsShowingSuggestions;
     }
 
     private bool ShouldShowSuggestions() {
