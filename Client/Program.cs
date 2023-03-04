@@ -20,5 +20,5 @@ static void ConfigureServices(IServiceCollection services)
     services.AddScoped<IHttpService, HttpService>();
     services.AddScoped<IGenreRepository, GenreRepository>();
     services.AddScoped<IPersonRepository, PersonRepository>();
-    //services.AddScoped<IMoviesRepository, MoviesRepository>();
+    services.AddScoped<IMoviesRepository, MoviesRepository>();
 }

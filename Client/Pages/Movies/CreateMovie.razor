@@ -1,5 +1,7 @@
 ﻿@page "/movies/create"
+@using BlazorMovies.Client.Repository;
 @inject NavigationManager navigationManager
+@inject IMoviesRepository moviesRepository
 
 <h3>CreateMovie</h3>
 
@@ -8,8 +10,17 @@
 @code {
     private Movie Movie = new Movie();
 
-    private void SaveMovie() {
-        Console.WriteLine("This works!");
+    private async Task SaveMovie()
+    {
+        try
+        {
+            var movieId = await moviesRepository.CreateMovie(Movie);
+            navigationManager.NavigateTo($"movie/{movieId}/{Movie.Title.Replace(" ", "-")}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 
     private List<Genre> NotSelectedGenres = new()
