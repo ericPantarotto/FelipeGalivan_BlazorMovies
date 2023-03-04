@@ -1,5 +1,5 @@
 ﻿//using AutoMapper;
-//using BlazorMovies.Server.Helpers;
+using BlazorMovies.Server.Helpers;
 //using BlazorMovies.Shared.DTOs;
 using BlazorMovies.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -11,15 +11,15 @@ namespace BlazorMovies.Server.Controllers
     public class PeopleController : ControllerBase
     {
         private readonly ApplicationDbContext context;
-        //private readonly IFileStorageService fileStorageService;
+        private readonly IFileStorageService fileStorageService;
         //private readonly IMapper mapper;
 
-        public PeopleController(ApplicationDbContext context)
-            //IFileStorageService fileStorageService,
+        public PeopleController(ApplicationDbContext context,
+            IFileStorageService fileStorageService)
             //IMapper mapper)
         {
             this.context = context;
-            //this.fileStorageService = fileStorageService;
+            this.fileStorageService = fileStorageService;
             //this.mapper = mapper;
         }
 
@@ -51,11 +51,11 @@ namespace BlazorMovies.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> Post(Person person)
         {
-            //if (!string.IsNullOrWhiteSpace(person.Picture))
-            //{
-            //    var personPicture = Convert.FromBase64String(person.Picture);
-            //    person.Picture = await fileStorageService.SaveFile(personPicture, "jpg", "people");
-            //}
+            if (!string.IsNullOrWhiteSpace(person.Picture))
+            {
+                var personPicture = Convert.FromBase64String(person.Picture);
+                person.Picture = await fileStorageService.SaveFile(personPicture, "jpg", "people");
+            }
 
             context.Add(person);
             await context.SaveChangesAsync();

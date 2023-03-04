@@ -1,4 +1,5 @@
 using BlazorMovies.Server;
+using BlazorMovies.Server.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IFileStorageService, AzureStorageService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
