@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlazorMovies.Shared.Entities {
+namespace BlazorMovies.Shared.Entities
+{
     public class Genre
     {
         public int Id { get; set; }

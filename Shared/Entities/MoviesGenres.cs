@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BlazorMovies.Shared.Entities
+﻿namespace BlazorMovies.Shared.Entities
 {
     public class MoviesGenres
     {
