@@ -1,11 +1,49 @@
 ﻿@page "/people"
-
+@using BlazorMovies.Client.Repository;
+@inject IPersonRepository personRepository
 <h3>Index People</h3>
 
 <div class="form-group">
     <a class="btn btn-info" href="person/create">New Person</a>
 </div>
 
-@code {
+<GenericList List="People">
+    <WholeListTemplate>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in People!)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-success" href="/genre/edit/@item.Id">Edit</a>
+                            <button class="btn btn-danger">Delete</button>
+                        </td>
+                        <td>@item.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </WholeListTemplate>
+</GenericList>
 
+@code {
+    List<Person>? People = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            People = await personRepository.GetPeople();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
 }

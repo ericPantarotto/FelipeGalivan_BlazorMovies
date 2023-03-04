@@ -14,6 +14,16 @@ namespace BlazorMovies.Client.Repository
             this.httpService = httpService;
         }
 
+        public async Task<List<Person>?> GetPeople()
+        {
+            var response = await httpService.Get<List<Person>>(url);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
+
         //public async Task<PaginatedResponse<List<Person>>> GetPeople(PaginationDTO paginationDTO)
         //{
         //    return await httpService.GetHelper<List<Person>>(url, paginationDTO);

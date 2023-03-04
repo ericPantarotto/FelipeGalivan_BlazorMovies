@@ -4,7 +4,7 @@ namespace BlazorMovies.Server.Helpers
 {
     public class AzureStorageService : IFileStorageService
     {
-        private string connectionString;
+        private string? connectionString;
 
         public AzureStorageService(IConfiguration configuration)
         {

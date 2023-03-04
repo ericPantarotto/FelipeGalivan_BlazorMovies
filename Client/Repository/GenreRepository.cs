@@ -13,7 +13,7 @@ namespace BlazorMovies.Client.Repository
             this.httpService = httpService;
         }
 
-        public async Task<List<Genre>> GetGenres()
+        public async Task<List<Genre>?> GetGenres()
         {
             var response = await httpService.Get<List<Genre>>(url);
             if (!response.Success)
@@ -22,7 +22,7 @@ namespace BlazorMovies.Client.Repository
             }
             return response.Response;
         }
-        public async Task<Genre> GetGenre(int Id)
+        public async Task<Genre?> GetGenre(int Id)
         {
             var response = await httpService.Get<Genre>($"{url}/{Id}");
             if (!response.Success)

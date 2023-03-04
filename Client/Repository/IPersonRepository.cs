@@ -7,6 +7,8 @@ namespace BlazorMovies.Client.Repository
     {
         Task CreatePerson(Person person);
         Task DeletePerson(int Id);
+        Task<List<Person>?> GetPeople();
+
         //Task<PaginatedResponse<List<Person>>> GetPeople(PaginationDTO paginationDTO);
         //Task<List<Person>> GetPeopleByName(string name);
         //Task<Person> GetPersonById(int id);

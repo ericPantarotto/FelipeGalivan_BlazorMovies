@@ -12,9 +12,9 @@ namespace BlazorMovies.Shared.Entities
         [Required]
         public DateTime? DateOfBirth { get; set; }
         [NotMapped]
-        public string Character { get; set; }
+        public string Character { get; set; } = string.Empty;
 
-        public override bool Equals(object obj) {
+        public override bool Equals(object? obj) {
             if (obj is Person p2) {
                 return Id == p2.Id;
             }

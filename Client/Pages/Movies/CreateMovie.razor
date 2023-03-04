@@ -2,13 +2,23 @@
 @using BlazorMovies.Client.Repository;
 @inject NavigationManager navigationManager
 @inject IMoviesRepository moviesRepository
+@inject IGenreRepository gengeRepository
 
 <h3>CreateMovie</h3>
 
-<MovieForm Movie="Movie" OnValidSubmit="SaveMovie" NotSelectedGenres="NotSelectedGenres"/>
+@if (NotSelectedGenres != null)
+{
+    <MovieForm Movie="Movie" OnValidSubmit="SaveMovie" NotSelectedGenres="NotSelectedGenres" />
+}
 
 @code {
     private Movie Movie = new Movie();
+    private List<Genre>? NotSelectedGenres;
+
+    protected async override Task OnInitializedAsync()
+    {
+        NotSelectedGenres = await gengeRepository.GetGenres();
+    }
 
     private async Task SaveMovie()
     {
@@ -23,10 +33,10 @@
         }
     }
 
-    private List<Genre> NotSelectedGenres = new()
-    {
-        new Genre(){Id = 1, Name = "Action"},
-        new Genre(){Id = 2, Name = "Comedy"},
-        new Genre(){Id = 3, Name = "Drama"}
-    };
+    //private List<Genre> NotSelectedGenres = new()
+    //{
+    //    new Genre(){Id = 1, Name = "Action"},
+    //    new Genre(){Id = 2, Name = "Comedy"},
+    //    new Genre(){Id = 3, Name = "Drama"}
+    //};
 }

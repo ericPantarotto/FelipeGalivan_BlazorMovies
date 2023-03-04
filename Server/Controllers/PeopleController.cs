@@ -3,6 +3,7 @@ using BlazorMovies.Server.Helpers;
 //using BlazorMovies.Shared.DTOs;
 using BlazorMovies.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazorMovies.Server.Controllers
 {
@@ -21,6 +22,12 @@ namespace BlazorMovies.Server.Controllers
             this.context = context;
             this.fileStorageService = fileStorageService;
             //this.mapper = mapper;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<Person>>> Get()
+        {
+            return await context.People.ToListAsync();
         }
 
         //[HttpGet]

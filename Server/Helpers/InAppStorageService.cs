@@ -48,7 +48,7 @@
             string savingPath = Path.Combine(folder, fileName);
             await File.WriteAllBytesAsync(savingPath, content);
 
-            var currentUrl = $"{httpContextAccessor.HttpContext.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}";
+            var currentUrl = $"{httpContextAccessor.HttpContext?.Request.Scheme}://{httpContextAccessor.HttpContext?.Request.Host}";
             var pathForDatabase = Path.Combine(currentUrl, containerName, fileName);
             return pathForDatabase;
         }
