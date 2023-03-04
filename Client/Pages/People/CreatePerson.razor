@@ -1,4 +1,7 @@
 ﻿@page "/person/create"
+@using BlazorMovies.Client.Repository;
+@inject IPersonRepository personRepository
+@inject NavigationManager navigationManager
 
 <h3>Create Person</h3>
 
@@ -7,7 +10,17 @@
 @code {
     Person Person = new Person();
 
-    private void Create() {
-        Console.WriteLine("creating person...");
+    private async Task Create()
+    {
+        try
+        {
+            await personRepository.CreatePerson(Person);
+            navigationManager.NavigateTo("people");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        
     }
 }

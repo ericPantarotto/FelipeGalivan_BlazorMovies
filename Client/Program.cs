@@ -19,6 +19,6 @@ static void ConfigureServices(IServiceCollection services)
     services.AddTransient<IRepository, RepositoryInMemory>();
     services.AddScoped<IHttpService, HttpService>();
     services.AddScoped<IGenreRepository, GenreRepository>();
-    //services.AddScoped<IPersonRepository, PersonRepository>();
+    services.AddScoped<IPersonRepository, PersonRepository>();
     //services.AddScoped<IMoviesRepository, MoviesRepository>();
 }
