@@ -2,7 +2,7 @@
 @using BlazorMovies.Client.Repository;
 @inject NavigationManager navigationManager
 @inject IMoviesRepository moviesRepository
-@inject IGenreRepository gengeRepository
+@inject IGenreRepository genreRepository
 
 <h3>CreateMovie</h3>
 
@@ -17,7 +17,7 @@
 
     protected async override Task OnInitializedAsync()
     {
-        NotSelectedGenres = await gengeRepository.GetGenres();
+        NotSelectedGenres = await genreRepository.GetGenres();
     }
 
     private async Task SaveMovie()

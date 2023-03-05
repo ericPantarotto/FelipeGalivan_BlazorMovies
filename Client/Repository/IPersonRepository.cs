@@ -10,7 +10,7 @@ namespace BlazorMovies.Client.Repository
         Task<List<Person>?> GetPeople();
 
         //Task<PaginatedResponse<List<Person>>> GetPeople(PaginationDTO paginationDTO);
-        //Task<List<Person>> GetPeopleByName(string name);
+        Task<List<Person>?> GetPeopleByName(string name);
         //Task<Person> GetPersonById(int id);
         Task UpdatePerson(Person person);
     }

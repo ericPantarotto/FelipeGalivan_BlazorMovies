@@ -29,15 +29,15 @@ namespace BlazorMovies.Client.Repository
         //    return await httpService.GetHelper<List<Person>>(url, paginationDTO);
         //}
 
-        //public async Task<List<Person>> GetPeopleByName(string name)
-        //{
-        //    var response = await httpService.Get<List<Person>>($"{url}/search/{name}");
-        //    if (!response.Success)
-        //    {
-        //        throw new ApplicationException(await response.GetBody());
-        //    }
-        //    return response.Response;
-        //}
+        public async Task<List<Person>?> GetPeopleByName(string name)
+        {
+            var response = await httpService.Get<List<Person>>($"{url}/search/{name}");
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+            return response.Response;
+        }
 
         //public async Task<Person> GetPersonById(int id)
         //{

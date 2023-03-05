@@ -1,5 +1,8 @@
 ﻿@using BlazorMovies.Client.Helpers;
-<EditForm Model="Movie" OnValidSubmit="OnValidSubmit">
+@using BlazorMovies.Client.Repository;
+@inject IPersonRepository personRepository
+
+<EditForm Model="Movie" OnValidSubmit="OnDataAnnotationsValidated">
     <DataAnnotationsValidator />
     <div class="form-group">
         <label>Title:</label>
@@ -97,21 +100,17 @@
         Console.WriteLine(imageBase64);
     }
 
-    private async Task<IEnumerable<Person>> SearchMethod(string searchText)
+    private async Task<IEnumerable<Person>?> SearchMethod(string searchText)
     {
-        await Task.Delay(TimeSpan.FromSeconds(1));
+        return await personRepository.GetPeopleByName(searchText);
 
 
-        return new List<Person>() {
-            new Person() { Id= 1, Name = "Tom Holland", Picture = "https://m.media-amazon.com/images/M/MV5BNTAzMzA3NjQwOF5BMl5BanBnXkFtZTgwMDUzODQ5MTI@._V1_UY317_CR23,0,214,317_AL_.jpg" },
-             new Person() {Id = 2, Name = "Tom Hanks", Picture = "https://m.media-amazon.com/images/M/MV5BMTQ2MjMwNDA3Nl5BMl5BanBnXkFtZTcwMTA2NDY3NQ@@._V1_UY317_CR2,0,214,317_AL_.jpg" }
-        };
     }
 
     private async Task OnDataAnnotationsValidated()
     {
         Movie.MoviesGenres = Selected
-            .Select(x => new MoviesGenres { GenresId = int.Parse(x.Key) }).ToList();
+            .Select(x => new MoviesGenres { GenreId = int.Parse(x.Key) }).ToList();
 
         Movie.MoviesActors = SelectedActors
             .Select(x => new MoviesActors { PersonId = x.Id, Character = x.Character }).ToList();

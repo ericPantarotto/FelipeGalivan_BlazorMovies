@@ -1,6 +1,6 @@
 ﻿//using AutoMapper;
 using BlazorMovies.Server.Helpers;
-//using BlazorMovies.Shared.DTOs;
+using BlazorMovies.Shared.DTOs;
 using BlazorMovies.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,30 +25,32 @@ namespace BlazorMovies.Server.Controllers
             //this.mapper = mapper;
         }
 
-        //[HttpGet]
-        //public async Task<ActionResult<IndexPageDTO>> Get()
-        //{
-        //    var limit = 6;
+        [HttpGet]
+        public async Task<ActionResult<IndexPageDTO>> Get()
+        {
+            int limit = 6;
 
-        //    var moviesInTheaters = await context.Movies
-        //        .Where(x => x.InTheaters).Take(limit)
-        //        .OrderByDescending(x => x.ReleaseDate)
-        //        .ToListAsync();
+            var moviesInTheaters = await context.Movies
+                .Where(x => x.InTheaters).Take(limit)
+                .OrderByDescending(x => x.ReleaseDate)
+                .ToListAsync();
 
-        //    var todaysDate = DateTime.Today;
+            DateTime todaysDate = DateTime.Today;
 
-        //    var upcomingReleases = await context.Movies
-        //        .Where(x => x.ReleaseDate > todaysDate)
-        //        .OrderBy(x => x.ReleaseDate).Take(limit)
-        //        .ToListAsync();
+            var upcomingReleases = await context.Movies
+                .Where(x => x.ReleaseDate > todaysDate)
+                .OrderBy(x => x.ReleaseDate).Take(limit)
+                .ToListAsync();
 
-        //    var response = new IndexPageDTO();
-        //    response.Intheaters = moviesInTheaters;
-        //    response.UpcomingReleases = upcomingReleases;
+            IndexPageDTO response = new() 
+            {
+                InTheaters = moviesInTheaters,
+                UpcomingReleases = upcomingReleases
+            };
 
-        //    return response;
+            return response;
 
-        //}
+        }
 
         //[HttpGet("{id}")]
         //public async Task<ActionResult<DetailsMovieDTO>> Get(int id)
@@ -146,7 +148,7 @@ namespace BlazorMovies.Server.Controllers
                 movie.Poster = await fileStorageService.SaveFile(poster, "jpg", containerName);
             }
 
-            if (movie.MoviesActors != null)
+            if (movie.MoviesActors is not null)
             {
                 for (int i = 0; i < movie.MoviesActors.Count; i++)
                 {

@@ -1,38 +1,29 @@
 ﻿@page "/"
 @page "/index"
-@using BlazorMovies.Client.Helpers;
-@inject IRepository repository
+@using BlazorMovies.Client.Repository;
+@inject IMoviesRepository moviesRepository
 
 <div>
-    <h3>Movie</h3>
-    <MoviesList Movies="movies" />
+    <h3>In Theaters</h3>
+    <MoviesList Movies="inTheaters" />
 </div>
 
-<CustomTypeahead SearchMethod="SearchMethod" Context="testString">
-    <ResultTemplate>
-        @testString
-    </ResultTemplate>
-    <NotFoundTemplate>
-        ❓
-    </NotFoundTemplate>
-</CustomTypeahead>
+<div>
+    <h3>Upcoming Releases</h3>
+    <MoviesList Movies="upcomingReleases" />
+</div>
+
 
 @code {
     private List<Movie>? movies = new();
+    private List<Movie>? inTheaters;
+    private List<Movie>? upcomingReleases;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        movies = repository.GetMovies();
-    }
-
-    private async Task<IEnumerable<string>> SearchMethod(string searchText) {
-        await Task.Delay(TimeSpan.FromSeconds(1));
-
-        if ( searchText == "test") {
-            return Enumerable.Empty<string>();
-        }
-        
-        return new List<string>() { "Felipe", "Gavilanche" };
+        var response = await moviesRepository.GetIndexPageDTO();
+        inTheaters = response?.InTheaters;
+        upcomingReleases = response?.UpcomingReleases;
     }
 
 } 

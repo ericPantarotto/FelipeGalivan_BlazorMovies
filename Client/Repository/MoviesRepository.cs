@@ -1,5 +1,5 @@
 ﻿using BlazorMovies.Client.Helpers;
-//using BlazorMovies.Shared.DTOs;
+using BlazorMovies.Shared.DTOs;
 using BlazorMovies.Shared.Entities;
 
 namespace BlazorMovies.Client.Repository
@@ -14,10 +14,18 @@ namespace BlazorMovies.Client.Repository
             this.httpService = httpService;
         }
 
-        //public async Task<IndexPageDTO> GetIndexPageDTO()
-        //{
-        //    return await httpService.GetHelper<IndexPageDTO>(url);
-        //}
+        public async Task<IndexPageDTO?> GetIndexPageDTO()
+        {
+            //return await httpService.GetHelper<IndexPageDTO>(url);
+
+            var response = await httpService.Get<IndexPageDTO?>(url);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+
+            return response.Response;
+        }
 
         //public async Task<MovieUpdateDTO> GetMovieForUpdate(int id)
         //{
