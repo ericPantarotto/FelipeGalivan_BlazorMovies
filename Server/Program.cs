@@ -1,6 +1,7 @@
 using BlazorMovies.Server;
 using BlazorMovies.Server.Helpers;
 using MathNet.Numerics;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,7 @@ builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
+builder.Services.AddAutoMapper(profileAssemblyMarkerTypes: typeof(Program));
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 

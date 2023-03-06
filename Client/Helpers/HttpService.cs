@@ -7,8 +7,8 @@ namespace BlazorMovies.Client.Helpers
     {
         private readonly HttpClient httpClient;
 
-        private JsonSerializerOptions defaultJsonSerializerOptions =>
-            new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+        private static JsonSerializerOptions DefaultJsonSerializerOptions =>
+            new() { PropertyNameCaseInsensitive = true };
 
         public HttpService(HttpClient httpClient)
         {
@@ -21,7 +21,7 @@ namespace BlazorMovies.Client.Helpers
 
             if (responseHTTP.IsSuccessStatusCode)
             {
-                var response = await Deserialize<T>(responseHTTP, defaultJsonSerializerOptions);
+                var response = await Deserialize<T>(responseHTTP, DefaultJsonSerializerOptions);
                 return new HttpResponseWrapper<T>(response, true, responseHTTP);
             }
             else
@@ -44,7 +44,7 @@ namespace BlazorMovies.Client.Helpers
             var response = await httpClient.PostAsync(url, stringContent);
             if (response.IsSuccessStatusCode)
             {
-                var responseDeserialized = await Deserialize<TResponse>(response, defaultJsonSerializerOptions);
+                var responseDeserialized = await Deserialize<TResponse>(response, DefaultJsonSerializerOptions);
                 return new HttpResponseWrapper<TResponse>(responseDeserialized, true, response);
             }
             else

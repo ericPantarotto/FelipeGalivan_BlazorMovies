@@ -6,7 +6,7 @@ namespace BlazorMovies.Client.Repository
     public class GenreRepository : IGenreRepository
     {
         private readonly IHttpService httpService;
-        private string url = "api/genres";
+        private readonly string url = "api/genres";
 
         public GenreRepository(IHttpService httpService)
         {

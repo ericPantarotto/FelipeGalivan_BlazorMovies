@@ -39,10 +39,10 @@ namespace BlazorMovies.Client.Repository
             return response.Response;
         }
 
-        //public async Task<Person> GetPersonById(int id)
-        //{
-        //    return await httpService.GetHelper<Person>($"{url}/{id}");
-        //}
+        public async Task<Person?> GetPersonById(int id)
+        {
+            return await httpService.GetHelper<Person>($"{url}/{id}");
+        }
 
         public async Task CreatePerson(Person person)
         {
@@ -53,7 +53,7 @@ namespace BlazorMovies.Client.Repository
             }
         }
 
-        public async Task UpdatePerson(Person person)
+        public async Task UpdatePerson(Person? person)
         {
             var response = await httpService.Put(url, person);
             if (!response.Success)
@@ -69,6 +69,16 @@ namespace BlazorMovies.Client.Repository
             {
                 throw new ApplicationException(await response.GetBody());
             }
+        }
+        private async Task<T?> Get<T>(string url)
+        {
+            var response = await httpService.Get<T?>(url);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+
+            return response.Response;
         }
     }
 }

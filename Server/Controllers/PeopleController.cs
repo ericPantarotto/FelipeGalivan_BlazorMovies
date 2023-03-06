@@ -1,4 +1,4 @@
-﻿//using AutoMapper;
+﻿using AutoMapper;
 using BlazorMovies.Server.Helpers;
 //using BlazorMovies.Shared.DTOs;
 using BlazorMovies.Shared.Entities;
@@ -13,15 +13,15 @@ namespace BlazorMovies.Server.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IFileStorageService fileStorageService;
-        //private readonly IMapper mapper;
+        private readonly IMapper mapper;
 
         public PeopleController(ApplicationDbContext context,
-            IFileStorageService fileStorageService)
-            //IMapper mapper)
+            IFileStorageService fileStorageService,
+            IMapper mapper)
         {
             this.context = context;
             this.fileStorageService = fileStorageService;
-            //this.mapper = mapper;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -47,13 +47,13 @@ namespace BlazorMovies.Server.Controllers
         //    return await queryable.Paginate(paginationDTO).ToListAsync();
         //}
 
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Person>> Get(int id)
-        //{
-        //    var person = await context.People.FirstOrDefaultAsync(x => x.Id == id);
-        //    if (person == null) { return NotFound(); }
-        //    return person;
-        //}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Person>> Get(int id)
+        {
+            Person? person = await context.People.FirstOrDefaultAsync(x => x.Id == id);
+            if (person is null) { return NotFound(); }
+            return person;
+        }
 
         //[HttpGet("search/{searchText}")]
         //public async Task<ActionResult<List<Person>>> FilterByName(string searchText)
@@ -78,26 +78,30 @@ namespace BlazorMovies.Server.Controllers
             return person.Id;
         }
 
-        //[HttpPut]
-        //public async Task<ActionResult> Put(Person person)
-        //{
-        //    var personDB = await context.People.FirstOrDefaultAsync(x => x.Id == person.Id);
+        [HttpPut]
+        public async Task<ActionResult> Put(Person person)
+        {
+            Person? personDB = await context.People.FirstOrDefaultAsync(x => x.Id == person.Id);
 
-        //    if (personDB == null) { return NotFound(); }
+            if (personDB is null) { return NotFound(); }
 
-        //    personDB = mapper.Map(person, personDB);
+            personDB = mapper.Map(person, personDB);
 
-        //    if (!string.IsNullOrWhiteSpace(person.Picture))
-        //    {
-        //        var personPicture = Convert.FromBase64String(person.Picture);
-        //        personDB.Picture = await fileStorageService.EditFile(personPicture,
-        //            "jpg", "people", personDB.Picture);
-        //    }
+            if (!string.IsNullOrWhiteSpace(person.Picture))
+            {
+                byte[] personPicture = Convert.FromBase64String(person.Picture);
 
-        //    await context.SaveChangesAsync();
-        //    return NoContent();
+                personDB.Picture = await fileStorageService.EditFile(
+                    content: personPicture,
+                    extension: "jpg",
+                    containerName: "people",
+                    fileRoute: personDB?.Picture!);
+            }
 
-        //}
+            await context.SaveChangesAsync();
+            return NoContent();
+
+        }
 
         //[HttpDelete("{id}")]
         //public async Task<ActionResult> Delete(int id)

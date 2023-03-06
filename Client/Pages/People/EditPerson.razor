@@ -1,4 +1,7 @@
 ﻿@page "/person/edit/{PersonId:int}"
+@using BlazorMovies.Client.Repository;
+@inject IPersonRepository personRepository
+@inject NavigationManager navigationManager
 
 <h3>Edit Person</h3>
 
@@ -9,13 +12,15 @@
 @code {
     [Parameter] public int PersonId { get; set; }
 
-    Person Person = new();
+    Person? Person;
 
-    protected override void OnInitialized() {
-        Person = new Person() { Name = "Felipe", DateOfBirth = DateTime.Today, Biography = "something" };
+    protected override async Task OnInitializedAsync() {
+        Person = await personRepository.GetPersonById(PersonId);
     }
 
-    private void Edit() {
-        Console.WriteLine("editing the person...");
+    private async Task Edit()
+    {
+        await personRepository.UpdatePerson(Person);
+        navigationManager.NavigateTo("people");
     }
 }
