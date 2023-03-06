@@ -1,5 +1,6 @@
 using BlazorMovies.Server;
 using BlazorMovies.Server.Helpers;
+using MathNet.Numerics;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //builder.Services.AddScoped<IFileStorageService, AzureStorageService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IFileStorageService, InAppStorageService>();
+
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

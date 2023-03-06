@@ -7,18 +7,16 @@ namespace BlazorMovies.Client.Repository
     public class MoviesRepository: IMoviesRepository
     {
         private readonly IHttpService httpService;
-        private string url = "api/movies";
+        private readonly string url = "api/movies";
 
         public MoviesRepository(IHttpService httpService)
         {
             this.httpService = httpService;
         }
 
-        public async Task<IndexPageDTO?> GetIndexPageDTO()
+        public async Task<int> CreateMovie(Movie movie)
         {
-            //return await httpService.GetHelper<IndexPageDTO>(url);
-
-            var response = await httpService.Get<IndexPageDTO?>(url);
+            var response = await httpService.Post<Movie, int>(url, movie);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());
@@ -27,14 +25,32 @@ namespace BlazorMovies.Client.Repository
             return response.Response;
         }
 
+        public async Task<IndexPageDTO?> GetIndexPageDTO()
+        {
+            return await Get<IndexPageDTO>(url);
+            //return await httpService.GetHelper<IndexPageDTO>(url);
+        }
+
+
+        public async Task<DetailsMovieDTO?> GetDetailsMovieDTO(int id)
+        {
+            return await Get<DetailsMovieDTO?>($"{url}/{id}");
+            //return await httpService.GetHelper<DetailsMovieDTO>($"{url}/{id}");
+        }
+
+        private async Task<T?> Get<T>(string url)
+        {
+            var response = await httpService.Get<T?>(url);
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+
+            return response.Response;
+        }
         //public async Task<MovieUpdateDTO> GetMovieForUpdate(int id)
         //{
         //    return await httpService.GetHelper<MovieUpdateDTO>($"{url}/update/{id}");
-        //}
-
-        //public async Task<DetailsMovieDTO> GetDetailsMovieDTO(int id)
-        //{
-        //    return await httpService.GetHelper<DetailsMovieDTO>($"{url}/{id}");
         //}
 
         //public async Task<PaginatedResponse<List<Movie>>> GetMoviesFiltered(FilterMoviesDTO filterMoviesDTO)
@@ -49,17 +65,6 @@ namespace BlazorMovies.Client.Repository
 
         //    return paginatedResponse;
         //}
-
-        public async Task<int> CreateMovie(Movie movie)
-        {
-            var response = await httpService.Post<Movie, int>(url, movie);
-            if (!response.Success)
-            {
-                throw new ApplicationException(await response.GetBody());
-            }
-
-            return response.Response;
-        }
 
         //public async Task UpdateMovie(Movie movie)
         //{

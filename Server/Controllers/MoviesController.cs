@@ -14,7 +14,7 @@ namespace BlazorMovies.Server.Controllers
         private readonly ApplicationDbContext context;
         private readonly IFileStorageService fileStorageService;
         //private readonly IMapper mapper;
-        private string containerName = "movies";
+        private readonly string containerName = "movies";
 
         public MoviesController(ApplicationDbContext context, 
             IFileStorageService fileStorageService)
@@ -52,33 +52,34 @@ namespace BlazorMovies.Server.Controllers
 
         }
 
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<DetailsMovieDTO>> Get(int id)
-        //{
-        //    var movie = await context.Movies.Where(x => x.Id == id)
-        //        .Include(x => x.MoviesGenres).ThenInclude(x => x.Genre)
-        //        .Include(x => x.MoviesActors).ThenInclude(x => x.Person)
-        //        .FirstOrDefaultAsync();
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<DetailsMovieDTO>> Get(int id)
+        {
+            Movie? movie = await context.Movies.Where(x => x.Id == id)
+                .Include(x => x.MoviesGenres).ThenInclude(x => x.Genre)
+                .Include(x => x.MoviesActors).ThenInclude(x => x.Person)
+                .FirstOrDefaultAsync();
 
-        //    if (movie == null) { return NotFound(); }
+            if (movie is null) { return NotFound(); }
 
-        //    movie.MoviesActors = movie.MoviesActors.OrderBy(x => x.Order).ToList();
+            movie.MoviesActors = movie.MoviesActors.OrderBy(x => x.Order).ToList();
 
-        //    var model = new DetailsMovieDTO();
-        //    model.Movie = movie;
-        //    model.Genres = movie.MoviesGenres.Select(x => x.Genre).ToList();
-        //    model.Actors = movie.MoviesActors.Select(x =>
-        //        new Person
-        //        {
-        //            Name = x.Person.Name,
-        //            Picture = x.Person.Picture,
-        //            Character = x.Character,
-        //            Id = x.PersonId
+            var model = new DetailsMovieDTO
+            {
+                Movie = movie,
+                Genres = movie.MoviesGenres.Select(x => x.Genre).ToList()!,
+                Actors = movie.MoviesActors.Select(x =>
+                    new Person
+                    {
+                        Name = x.Person?.Name!,
+                        Picture = x.Person?.Picture!,
+                        Character = x.Character,
+                        Id = x.PersonId
+                    }).ToList()
+            };
 
-        //        }).ToList();
-
-        //    return model;
-        //}
+            return model;
+        }
 
         //[HttpPost("filter")]
         //public async Task<ActionResult<List<Movie>>> Filter(FilterMoviesDTO filterMoviesDTO)
