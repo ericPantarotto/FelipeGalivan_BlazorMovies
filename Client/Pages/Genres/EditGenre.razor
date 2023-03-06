@@ -1,4 +1,7 @@
 ﻿@page "/genre/edit/{GenreId:int}"
+@using BlazorMovies.Client.Repository;
+@inject IGenreRepository genreRepository
+@inject NavigationManager navigationManager
 
 <h3>EditGenre</h3>
 
@@ -9,17 +12,16 @@
 @code {
     [Parameter] public int GenreId { get; set; }
 
-    private Genre genre = new();
+    private Genre? genre;
 
-    protected override void OnInitialized() 
+    protected override async Task OnInitializedAsync() 
     {
-        genre = new() { Id = GenreId, Name = "Comedy"};
+        genre = await genreRepository.GetGenre(GenreId);
     }
 
     private void Edit() 
     {
-        Console.WriteLine("Edit method");
-        Console.WriteLine(genre.Id);
-        Console.WriteLine(genre.Name);
+        genreRepository.UpdateGenre(genre!);
+        navigationManager.NavigateTo("genres");
     }
 }
