@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BlazorMovies.Server.Helpers;
-//using BlazorMovies.Shared.DTOs;
+using BlazorMovies.Shared.DTOs;
 using BlazorMovies.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,10 +24,17 @@ namespace BlazorMovies.Server.Controllers
             this.mapper = mapper;
         }
 
+        //[HttpGet]
+        //public async Task<ActionResult<List<Person>>> Get()
+        //{
+        //    return await context.People.ToListAsync();
+        //}
         [HttpGet]
-        public async Task<ActionResult<List<Person>>> Get()
+        public async Task<ActionResult<List<Person>>> Get([FromQuery] PaginationDTO paginationDTO)
         {
-            return await context.People.ToListAsync();
+            var queryable = context.People.AsQueryable();
+            await HttpContext.InsertPaginationParametersInResponse(queryable, paginationDTO.RecordsPerPage);
+            return await queryable.Paginate(paginationDTO).ToListAsync();
         }
 
         [HttpGet("search/{searchText}")]
@@ -39,13 +46,6 @@ namespace BlazorMovies.Server.Controllers
                 .ToListAsync();
         }
 
-        //[HttpGet]
-        //public async Task<ActionResult<List<Person>>> Get([FromQuery] PaginationDTO paginationDTO)
-        //{
-        //    var queryable = context.People.AsQueryable();
-        //    await HttpContext.InsertPaginationParametersInResponse(queryable, paginationDTO.RecordsPerPage);
-        //    return await queryable.Paginate(paginationDTO).ToListAsync();
-        //}
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> Get(int id)

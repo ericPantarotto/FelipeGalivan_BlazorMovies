@@ -34,12 +34,16 @@
 
 @code {
     List<Person>? People = new();
+    PaginationDTO paginationDTO = new() { RecordsPerPage = 1};
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            People = await personRepository.GetPeople();
+            //People = await personRepository.GetPeople();
+            var paginatedResponse = await personRepository.GetPeople(paginationDTO);
+            People = paginatedResponse.Response;
+            Console.WriteLine(paginatedResponse.TotalAmountPages);
         }
         catch (Exception ex)
         {
