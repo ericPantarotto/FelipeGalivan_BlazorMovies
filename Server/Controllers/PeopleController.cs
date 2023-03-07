@@ -103,18 +103,18 @@ namespace BlazorMovies.Server.Controllers
 
         }
 
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult> Delete(int id)
-        //{
-        //    var person = await context.People.FirstOrDefaultAsync(x => x.Id == id);
-        //    if (person == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var person = await context.People.FirstOrDefaultAsync(x => x.Id == id);
+            if (person is null)
+            {
+                return NotFound();
+            }
 
-        //    context.Remove(person);
-        //    await context.SaveChangesAsync();
-        //    return NoContent();
-        //}
+            context.Remove(person);
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }

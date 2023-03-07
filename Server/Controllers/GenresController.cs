@@ -49,7 +49,7 @@ namespace BlazorMovies.Server.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var genre = await context.Genres.FirstOrDefaultAsync(x => x.Id == id);
-            if (genre == null)
+            if (genre is null)
             {
                 return NotFound();
             }

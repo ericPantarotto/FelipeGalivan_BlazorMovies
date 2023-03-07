@@ -52,11 +52,7 @@ namespace BlazorMovies.Client.Repository
 
         public async Task DeleteGenre(int Id)
         {
-            var response = await httpService.Delete($"{url}/{Id}");
-            if (!response.Success)
-            {
-                throw new ApplicationException(await response.GetBody());
-            }
+            await httpService.DeleteHelper(url, Id);
         }
     }
 }

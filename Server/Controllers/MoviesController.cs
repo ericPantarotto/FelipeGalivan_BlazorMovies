@@ -38,7 +38,7 @@ namespace BlazorMovies.Server.Controllers
             DateTime todaysDate = DateTime.Today;
 
             var upcomingReleases = await context.Movies
-                .Where(x => x.ReleaseDate > todaysDate)
+                .Where(x => x.ReleaseDate >= todaysDate)
                 .OrderBy(x => x.ReleaseDate).Take(limit)
                 .ToListAsync();
 
@@ -200,18 +200,18 @@ namespace BlazorMovies.Server.Controllers
             return NoContent();
         }
 
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult> Delete(int id)
-        //{
-        //    var movie = await context.Movies.FirstOrDefaultAsync(x => x.Id == id);
-        //    if (movie == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var movie = await context.Movies.FirstOrDefaultAsync(x => x.Id == id);
+            if (movie is null)
+            {
+                return NotFound();
+            }
 
-        //    context.Remove(movie);
-        //    await context.SaveChangesAsync();
-        //    return NoContent();
-        //}
+            context.Remove(movie);
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }

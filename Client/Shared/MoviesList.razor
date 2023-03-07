@@ -1,5 +1,8 @@
 ﻿@using BlazorMovies.Client.Helpers;
+@using BlazorMovies.Client.Pages.Movies
+@using BlazorMovies.Client.Repository;
 @inject IJSRuntime js
+@inject IMoviesRepository moviesRepository
 
 <div class="movies-container">
     <GenericList List="Movies">
@@ -19,6 +22,7 @@
         bool confirmed = await js.Confirm($"Are you sure you want to delete {movie.Title}?");
         if (confirmed)
         {
+            await moviesRepository.DeleteMovie(movie.Id);
             Movies?.Remove(movie);
         }
     }

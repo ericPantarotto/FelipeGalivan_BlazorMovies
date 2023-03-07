@@ -12,6 +12,15 @@
             return response.Response;
         }
 
+        public static async Task DeleteHelper(this IHttpService httpService, string url, int id)
+        {
+            var response = await httpService.Delete($"{url}/{id}");
+            if (!response.Success)
+            {
+                throw new ApplicationException(await response.GetBody());
+            }
+        }
+
         //public static async Task<PaginatedResponse<T>> GetHelper<T>(this IHttpService httpService, string url, 
         //    PaginationDTO paginationDTO)
         //{
