@@ -27,7 +27,7 @@
                             <a class="btn btn-success" href="/person/edit/@item.Id">Edit</a>
                             <button class="btn btn-danger" @onclick="@(() => DeletePerson(item.Id))">Delete</button>
                         </td>
-                        <td>@item.Name</td>
+                        <td><a href="/person/@item.Id/@item.Name.Replace(" ","-")">@item.Name</a></td>
                     </tr>
                 }
             </tbody>

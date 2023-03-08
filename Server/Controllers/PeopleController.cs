@@ -56,6 +56,23 @@ namespace BlazorMovies.Server.Controllers
             return person;
         }
 
+        [HttpGet("detail/{id}")]
+        public async Task<ActionResult<DetailsPersonDTO>> GetDetail(int id)
+        {
+            Person? person = await context.People.FirstOrDefaultAsync(x => x.Id == id);
+            if (person is null) { return NotFound(); }
+
+            List<Movie?>? movies = await context.MoviesActors
+                .Where(ma => ma.PersonId == id)
+                .OrderBy(x => x.Movie!.Title)
+                .Select(m => m.Movie)
+                .ToListAsync();
+
+            DetailsPersonDTO detailsPersonDTO = new() { Person = person, Movies = movies };
+
+            return detailsPersonDTO;
+        }
+
         //[HttpGet("search/{searchText}")]
         //public async Task<ActionResult<List<Person>>> FilterByName(string searchText)
         //{

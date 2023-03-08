@@ -8,7 +8,8 @@ namespace BlazorMovies.Client.Repository
     public class PersonRepository: IPersonRepository
     {
         private readonly IHttpService httpService;
-        private readonly string url = "api/people/paginate";
+        private readonly string url = "api/people";
+        private readonly string urlPaginate = "api/people/paginate";
 
         public PersonRepository(IHttpService httpService)
         {
@@ -27,7 +28,7 @@ namespace BlazorMovies.Client.Repository
 
         public async Task<PaginatedResponse<List<Person>>> GetPeople(PaginationDTO paginationDTO)
         {
-            return await httpService.GetHelper<List<Person>>(url, paginationDTO);
+            return await httpService.GetHelper<List<Person>>(urlPaginate, paginationDTO);
         }
 
         public async Task<List<Person>?> GetPeopleByName(string name)
@@ -43,6 +44,11 @@ namespace BlazorMovies.Client.Repository
         public async Task<Person?> GetPersonById(int id)
         {
             return await httpService.GetHelper<Person>($"{url}/{id}");
+        }
+
+        public async Task<DetailsPersonDTO?> GetPersonDetailById(int id)
+        {
+            return await httpService.GetHelper<DetailsPersonDTO>($"api/people/detail/{id}");
         }
 
         public async Task CreatePerson(Person person)
