@@ -24,12 +24,13 @@ namespace BlazorMovies.Server.Controllers
             this.mapper = mapper;
         }
 
-        //[HttpGet]
-        //public async Task<ActionResult<List<Person>>> Get()
-        //{
-        //    return await context.People.ToListAsync();
-        //}
         [HttpGet]
+        public async Task<ActionResult<List<Person>>> Get()
+        {
+            return await context.People.ToListAsync();
+        }
+        [HttpGet]
+        [Route("paginate")]
         public async Task<ActionResult<List<Person>>> Get([FromQuery] PaginationDTO paginationDTO)
         {
             var queryable = context.People.AsQueryable();

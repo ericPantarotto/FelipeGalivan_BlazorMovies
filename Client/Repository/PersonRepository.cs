@@ -8,7 +8,7 @@ namespace BlazorMovies.Client.Repository
     public class PersonRepository: IPersonRepository
     {
         private readonly IHttpService httpService;
-        private readonly string url = "api/people";
+        private readonly string url = "api/people/paginate";
 
         public PersonRepository(IHttpService httpService)
         {

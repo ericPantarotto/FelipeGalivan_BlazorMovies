@@ -10,7 +10,7 @@ namespace BlazorMovies.Client.Repository
         Task<DetailsMovieDTO?> GetDetailsMovieDTO(int id);
         Task<IndexPageDTO?> GetIndexPageDTO();
         Task<MovieUpdateDTO?> GetMovieForUpdate(int id);
-        //Task<PaginatedResponse<List<Movie>>> GetMoviesFiltered(FilterMoviesDTO filterMoviesDTO);
+        Task<PaginatedResponse<List<Movie>>> GetMoviesFiltered(FilterMoviesDTO filterMoviesDTO);
         Task UpdateMovie(Movie movie);
     }
 }
