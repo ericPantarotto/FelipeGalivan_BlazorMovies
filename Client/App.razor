@@ -5,14 +5,20 @@
 <Router AppAssembly="@typeof(App).Assembly" OnNavigateAsync="OnNavigateAsync"
     AdditionalAssemblies="lazyLoadedAssemblies">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <Authorizing>
+                <text>Custom Authorizing</text>
+            </Authorizing>
+        </AuthorizeRouteView>
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <CustomNotFound />
-        </LayoutView>
+        <CascadingAuthenticationState>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <CustomNotFound />
+            </LayoutView>
+        </CascadingAuthenticationState>
     </NotFound>
 </Router>
 
