@@ -1,6 +1,8 @@
 ﻿@page "/people"
 @using BlazorMovies.Client.Repository;
 @inject IPersonRepository personRepository
+@attribute [Authorize]
+
 <h3>Index People</h3>
 
 <div class="form-group">

@@ -1,6 +1,8 @@
 ﻿@page "/genres"
 @using BlazorMovies.Client.Repository;
+@using Microsoft.AspNetCore.Authorization;
 @inject IGenreRepository genreRepository
+@attribute [Authorize]
 
 <h3>IndexGenres</h3>
 
