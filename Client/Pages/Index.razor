@@ -3,6 +3,15 @@
 @using BlazorMovies.Client.Repository;
 @inject IMoviesRepository moviesRepository
 
+<AuthorizeView>
+    <Authorized>
+        you are authorized, @context.User?.Identity?.Name - @context?.User?.Claims.FirstOrDefault(c => c.Type == "key1")
+    </Authorized>
+    <NotAuthorized>
+        you are Not authorized
+    </NotAuthorized>
+</AuthorizeView>
+
 <div>
     <h3>In Theaters</h3>
     <MoviesList Movies="inTheaters" />

@@ -15,40 +15,31 @@
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="homework">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Homework
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
             <NavLink class="nav-link" href="/movies/search">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Search Movie
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="genres">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Genres
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="people">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> People
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="movies/create">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Create a Movie
-            </NavLink>
-        </div>
+
+        <AuthorizeView>
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="genres">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Genres
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="people">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> People
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="movies/create">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Create a Movie
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+
     </nav>
 </div>
 
