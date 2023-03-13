@@ -28,7 +28,7 @@ namespace BlazorMovies.Server.Controllers
         }
 
         [HttpGet]
-        [Authorize(JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<IndexPageDTO>> Get()
         {
             int limit = 6;
