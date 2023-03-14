@@ -2,6 +2,8 @@
 using BlazorMovies.Server.Helpers;
 using BlazorMovies.Shared.DTOs;
 using BlazorMovies.Shared.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +11,7 @@ namespace BlazorMovies.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PeopleController : ControllerBase
     {
         private readonly ApplicationDbContext context;
@@ -57,6 +60,7 @@ namespace BlazorMovies.Server.Controllers
         }
 
         [HttpGet("detail/{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<DetailsPersonDTO>> GetDetail(int id)
         {
             Person? person = await context.People.FirstOrDefaultAsync(x => x.Id == id);

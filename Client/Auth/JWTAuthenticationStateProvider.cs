@@ -109,15 +109,16 @@ namespace BlazorMovies.Client.Auth
 
         public AuthenticationState BuildAuthenticationState(string token)
         {
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
-            
-            //DEBUG:
-            var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
-            var test = ParseClaimsFromJwt(token);
-            
-            
-            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt")));
-        }
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);            
+            var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);            
+            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(jwt.Claims, "jwt")));
+        } 
+        // before Blazor could read JWT claims
+        //public AuthenticationState BuildAuthenticationState(string token)
+        //{
+        //    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);            
+        //    return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt")));
+        //}
 
         private static bool ShouldRenewToken(DateTime expirationTime)
         {
@@ -129,7 +130,7 @@ namespace BlazorMovies.Client.Auth
             return expirationTime <= DateTime.UtcNow;
         }
 
-        private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
+        private static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
         {
             var claims = new List<Claim>();
             string payload = jwt.Split('.')[1];

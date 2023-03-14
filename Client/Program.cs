@@ -23,6 +23,7 @@ static void ConfigureServices(IServiceCollection services)
     services.AddScoped<IGenreRepository, GenreRepository>();
     services.AddScoped<IPersonRepository, PersonRepository>();
     services.AddScoped<IMoviesRepository, MoviesRepository>();
+    services.AddScoped<IAccountsRepository, AccountsRepository>();
 
     services.AddAuthorizationCore();
 
