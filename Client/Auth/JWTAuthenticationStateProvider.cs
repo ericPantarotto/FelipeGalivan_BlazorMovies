@@ -16,7 +16,7 @@ namespace BlazorMovies.Client.Auth
         private readonly HttpClient httpClient;
         //private readonly IAccountsRepository accountsRepository;
         private readonly string TOKENKEY = "TOKENKEY";
-        private readonly string EXPIRATIONTOKENKEY = "EXPIRATIONTOKENKEY";
+        //private readonly string EXPIRATIONTOKENKEY = "EXPIRATIONTOKENKEY";
 
         private static AuthenticationState Anonymous => new(new ClaimsPrincipal(new ClaimsIdentity()));
 
