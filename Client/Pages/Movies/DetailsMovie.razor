@@ -1,8 +1,10 @@
 ﻿@page "/movie/{MovieId:int}"
 @page "/movie/{MovieId:int}/{MovieName}"
+@using BlazorMovies.Client.Helpers;
 @using BlazorMovies.Client.Repository;
 @inject IMoviesRepository moviesRepository
 @inject IRatingRepository ratingRepository
+@inject IDisplayMessage displayMessage
 
 @if (model is null)
 {
@@ -70,7 +72,7 @@ else
         model!.UserVote = selectedRate;
         var movieRating = new MovieRating() { Rate = selectedRate, MovieId = MovieId };
         await ratingRepository.Vote(movieRating);
-        //await displayMessage.DisplaySuccessMessage("Your vote have been received!");
+        await displayMessage.DisplaySuccessMessage("Your vote have been received!");
     }
     
 }

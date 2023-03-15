@@ -25,6 +25,8 @@ static void ConfigureServices(IServiceCollection services)
     services.AddScoped<IMoviesRepository, MoviesRepository>();
     services.AddScoped<IAccountsRepository, AccountsRepository>();
     services.AddScoped<IRatingRepository, RatingRepository>();
+    services.AddScoped<IDisplayMessage, DisplayMessage>();
+
 
     services.AddAuthorizationCore();
 

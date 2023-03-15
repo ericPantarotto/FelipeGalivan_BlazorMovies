@@ -1,4 +1,5 @@
-﻿@*@inject IDisplayMessage displayMessage*@
+﻿@using BlazorMovies.Client.Helpers;
+@inject IDisplayMessage displayMessage
 
 @for (int i = 1; i <= MaximumRating; i++)
 {
@@ -37,7 +38,7 @@
 
         if (!user.Identity!.IsAuthenticated)
         {
-            //await displayMessage.DisplayErrorMessage("You must login in order to vote");
+            await displayMessage.DisplayErrorMessage("You must login in order to vote");
             return;
         }
 
