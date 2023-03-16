@@ -37,4 +37,6 @@ static void ConfigureServices(IServiceCollection services)
 
     services.AddScoped<ILoginService, JWTAuthenticationStateProvider>(
         provider => provider.GetRequiredService<JWTAuthenticationStateProvider>());
+
+    services.AddScoped<TokenRenewer>();
 }

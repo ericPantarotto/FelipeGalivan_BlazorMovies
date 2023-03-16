@@ -1,5 +1,7 @@
 ﻿@using BlazorMovies.Client.Helpers;
 @inherits LayoutComponentBase
+@inject BlazorMovies.Client.Auth.TokenRenewer tokenRenewer
+@*@inject IJSRuntime js*@
 
 <div class="page">
     <div class="sidebar">
@@ -20,4 +22,10 @@
 
 @code{
     AppState appState = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        //await js.InitializeInactivityTimer(DotNetObjectReference.Create(this));
+        tokenRenewer.Initiate();
+    }
 }

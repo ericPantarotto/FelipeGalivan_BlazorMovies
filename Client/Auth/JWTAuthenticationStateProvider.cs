@@ -1,5 +1,5 @@
 ﻿using BlazorMovies.Client.Helpers;
-//using BlazorMovies.Client.Repository;
+using BlazorMovies.Client.Repository;
 using BlazorMovies.Shared.DTOs;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
@@ -14,19 +14,17 @@ namespace BlazorMovies.Client.Auth
     {
         private readonly IJSRuntime js;
         private readonly HttpClient httpClient;
-        //private readonly IAccountsRepository accountsRepository;
+        private readonly IAccountsRepository accountsRepository;
         private readonly string TOKENKEY = "TOKENKEY";
-        //private readonly string EXPIRATIONTOKENKEY = "EXPIRATIONTOKENKEY";
+        private readonly string EXPIRATIONTOKENKEY = "EXPIRATIONTOKENKEY";
 
         private static AuthenticationState Anonymous => new(new ClaimsPrincipal(new ClaimsIdentity()));
 
-        public JWTAuthenticationStateProvider(IJSRuntime js, HttpClient httpClient
-            //IAccountsRepository usersRepository
-            )
+        public JWTAuthenticationStateProvider(IJSRuntime js, HttpClient httpClient, IAccountsRepository usersRepository)
         {
             this.js = js;
             this.httpClient = httpClient;
-            //this.accountsRepository = usersRepository;
+            this.accountsRepository = usersRepository;
         }
 
         public async override Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -38,21 +36,21 @@ namespace BlazorMovies.Client.Auth
                 return Anonymous;
             }
 
-            //string expirationTimeString = await js.GetFromLocalStorage(EXPIRATIONTOKENKEY);
+            string expirationTimeString = await js.GetFromLocalStorage(EXPIRATIONTOKENKEY);
 
-            //if (DateTime.TryParse(expirationTimeString, out DateTime expirationTime))
-            //{
-            //    if (IsTokenExpired(expirationTime))
-            //    {
-            //        await CleanUp();
-            //        return Anonymous;
-            //    }
+            if (DateTime.TryParse(expirationTimeString, out DateTime expirationTime))
+            {
+                if (IsTokenExpired(expirationTime))
+                {
+                    await CleanUp();
+                    return Anonymous;
+                }
 
-            //    if (ShouldRenewToken(expirationTime))
-            //    {
-            //        token = await RenewToken(token);
-            //    }
-            //}
+                if (ShouldRenewToken(expirationTime))
+                {
+                    token = await RenewToken(token); //we assign the new token to the old token, used as a parameter
+                }
+            }
 
             return BuildAuthenticationState(token);
         }
@@ -60,7 +58,7 @@ namespace BlazorMovies.Client.Auth
         public async Task Login(UserToken userToken)
         {
             await js.SetInLocalStorage(TOKENKEY, userToken.Token);
-            //await js.SetInLocalStorage(EXPIRATIONTOKENKEY, userToken.Expiration.ToString());
+            await js.SetInLocalStorage(EXPIRATIONTOKENKEY, userToken.Expiration.ToString());
             var authState = BuildAuthenticationState(userToken.Token);
             NotifyAuthenticationStateChanged(Task.FromResult(authState));
         }
@@ -72,40 +70,39 @@ namespace BlazorMovies.Client.Auth
         private async Task CleanUp()
         {
             await js.RemoveItem(TOKENKEY);
-            //await js.RemoveItem(EXPIRATIONTOKENKEY);
+            await js.RemoveItem(EXPIRATIONTOKENKEY);
             httpClient.DefaultRequestHeaders.Authorization = null;
         }
 
-        //public async Task TryRenewToken()
-        //{
-        //    var expirationTimeString = await js.GetFromLocalStorage(EXPIRATIONTOKENKEY);
-        //    DateTime expirationTime;
+        public async Task TryRenewToken()
+        {
+            var expirationTimeString = await js.GetFromLocalStorage(EXPIRATIONTOKENKEY);
 
-        //    if (DateTime.TryParse(expirationTimeString, out expirationTime))
-        //    {
-        //        if (IsTokenExpired(expirationTime))
-        //        {
-        //            await Logout();
-        //        }
+            if (DateTime.TryParse(expirationTimeString, out DateTime expirationTime))
+            {
+                if (IsTokenExpired(expirationTime))
+                {
+                    await Logout();
+                }
 
-        //        if (ShouldRenewToken(expirationTime))
-        //        {
-        //            var token = await js.GetFromLocalStorage(TOKENKEY);
-        //            var newToken = await RenewToken(token);
-        //            var authState = BuildAuthenticationState(newToken);
-        //            NotifyAuthenticationStateChanged(Task.FromResult(authState));
-        //        }
-        //    }
-        //}
+                if (ShouldRenewToken(expirationTime))
+                {
+                    var token = await js.GetFromLocalStorage(TOKENKEY);
+                    var newToken = await RenewToken(token);
+                    var authState = BuildAuthenticationState(newToken);
+                    NotifyAuthenticationStateChanged(Task.FromResult(authState));
+                }
+            }
+        }
 
-        //private async Task<string> RenewToken(string token)
-        //{
-        //    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
-        //    var newToken = await accountsRepository.RenewToken();
-        //    await js.SetInLocalStorage(TOKENKEY, newToken.Token);
-        //    await js.SetInLocalStorage(EXPIRATIONTOKENKEY, newToken.Expiration.ToString());
-        //    return newToken.Token;
-        //}
+        private async Task<string> RenewToken(string token)
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+            UserToken? newToken = await accountsRepository.RenewToken();
+            await js.SetInLocalStorage(TOKENKEY, newToken?.Token!);
+            await js.SetInLocalStorage(EXPIRATIONTOKENKEY, newToken?.Expiration.ToString()!);
+            return newToken?.Token!;
+        }
 
         public AuthenticationState BuildAuthenticationState(string token)
         {

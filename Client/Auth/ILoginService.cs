@@ -6,6 +6,6 @@ namespace BlazorMovies.Client.Auth
     {
         Task Login(UserToken userToken);
         Task Logout();
-        //Task TryRenewToken();
+        Task TryRenewToken();
     }
 }
