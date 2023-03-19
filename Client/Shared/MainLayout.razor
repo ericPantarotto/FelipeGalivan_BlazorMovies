@@ -1,8 +1,4 @@
-﻿@using BlazorMovies.Client.Helpers;
-@inherits LayoutComponentBase
-@inject BlazorMovies.Client.Auth.TokenRenewer tokenRenewer
-@inject IJSRuntime js
-@inject NavigationManager navigationManager
+﻿@inherits LayoutComponentBase
 
 <div class="page">
     <div class="sidebar">
@@ -20,24 +16,3 @@
         </article>
     </main>
 </div>
-
-@code{
-    AppState appState = new();
-    [CascadingParameter] public Task<AuthenticationState>? AuthenticationState { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await js.InitializeInactivityTimer(DotNetObjectReference.Create(this));
-        tokenRenewer.Initiate();
-    }
-
-    [JSInvokable]
-    public async Task Logout()
-    {
-        var authState = await AuthenticationState!;
-        if (authState.User.Identity!.IsAuthenticated)
-        {
-            navigationManager.NavigateTo("logout");
-        }
-    }
-}

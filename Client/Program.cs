@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using BlazorMovies.Client;
 using BlazorMovies.Client.Helpers;
 using BlazorMovies.Client.Repository;
-using Microsoft.AspNetCore.Components.Authorization;
-using BlazorMovies.Client.Auth;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -28,15 +26,5 @@ static void ConfigureServices(IServiceCollection services)
     services.AddScoped<IDisplayMessage, DisplayMessage>();
     services.AddScoped<IUsersRepository, UserRepository>();
 
-
-    services.AddAuthorizationCore();
-
-    services.AddScoped<JWTAuthenticationStateProvider>();
-    services.AddScoped<AuthenticationStateProvider, JWTAuthenticationStateProvider>(
-        provider => provider.GetRequiredService<JWTAuthenticationStateProvider>());
-
-    services.AddScoped<ILoginService, JWTAuthenticationStateProvider>(
-        provider => provider.GetRequiredService<JWTAuthenticationStateProvider>());
-
-    services.AddScoped<TokenRenewer>();
+    services.AddApiAuthorization();
 }

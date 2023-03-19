@@ -22,4 +22,8 @@
   <ItemGroup>
     <BlazorWebAssemblyLazyLoad Include="MathNet.Numerics.dll" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Auth\" />
+  </ItemGroup>
 </Project>
