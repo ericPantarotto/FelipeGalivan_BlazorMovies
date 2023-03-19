@@ -18,7 +18,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddIdentityServer()
-    .AddApiAuthorization<IdentityUser, ApplicationDbContext>();
+    .AddApiAuthorization<IdentityUser, ApplicationDbContext>()
+    .AddProfileService<IdentityProfileService>();
+
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
 
