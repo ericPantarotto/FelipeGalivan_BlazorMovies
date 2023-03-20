@@ -34,10 +34,17 @@
             </label>
         </div>
         <div class="form-group mx-sm-3 mb-2">
-            <input type="checkbox" class="form-check-input" id="upcomingReleases"
+            <input type="checkbox" class="form-check-input" id="inTheaters"
                    @bind="filterMoviesDTO.InTheaters" />
             <label class="form-check-label" for="inTheaters">
                 In Theaters
+            </label>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <input type="checkbox" class="form-check-input" id="mostVoted"
+                   @bind="filterMoviesDTO.OrderByVotes" />
+            <label class="form-check-label" for="mostVoted">
+                Most Voted
             </label>
         </div>
 
@@ -116,6 +123,7 @@
         queryStringsDict["intheaters"] = filterMoviesDTO.InTheaters.ToString();
         queryStringsDict["upcomingReleases"] = filterMoviesDTO.UpcomingReleases.ToString();
         queryStringsDict["page"] = filterMoviesDTO.Page.ToString();
+        queryStringsDict["mostVoted"] = filterMoviesDTO.OrderByVotes.ToString();
 
         List<string> defaultValue = new() { "false", "", "0" };
 
@@ -135,6 +143,9 @@
 
         if (queryStrings.ContainsKey("upcomingReleases")) { filterMoviesDTO.UpcomingReleases = bool.Parse(queryStrings["upcomingReleases"]); }
 
+        if (queryStrings.ContainsKey("mostVoted")) { filterMoviesDTO.OrderByVotes = bool.Parse(queryStrings["mostVoted"]); }
+
         if (queryStrings.ContainsKey("page")) { filterMoviesDTO.Page = int.Parse(queryStrings["page"]); }
+        
     }
 }
