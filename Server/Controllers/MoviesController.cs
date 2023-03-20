@@ -145,6 +145,27 @@ namespace BlazorMovies.Server.Controllers
                     .Contains(filterMoviesDTO.GenreId));
             }
 
+            if (filterMoviesDTO.OrderByVotes)
+            {
+                var voteAverages = context.MovieRatings
+                    .GroupBy(x => x.MovieId)
+                    .Select(n => new { Id = n.Key, AverageRating = n.Average(x => x.Rate) });
+
+                //moviesQueryable = from m in moviesQueryable
+                //                  join r in voteAverages
+                //                      on m.Id equals r.Id into grouping
+                //                  from p in grouping.DefaultIfEmpty()
+                //                  orderby p.AverageRating descending
+                //                  select m;
+
+                moviesQueryable = moviesQueryable.Join(voteAverages,
+                    m => m.Id,
+                    r => r.Id,
+                    (m, r) => new { Movies = m, Rating = r.AverageRating })
+                    .OrderByDescending(x => x.Rating)
+                    .Select(x => x.Movies).DefaultIfEmpty()!;
+            }
+
             await HttpContext.InsertPaginationParametersInResponse(moviesQueryable,
                 filterMoviesDTO.RecordsPerPage);
 
