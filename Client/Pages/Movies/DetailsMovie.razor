@@ -59,11 +59,27 @@ else
     [Parameter] public string MovieName { get; set; } = string.Empty;
     private RenderFragment<Genre> linkGenre = (genre) =>@<a href="movies/search?genreId=@genre.Id">@genre.Name</a>;
     DetailsMovieDTO? model;
-
+    
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
-        model = await moviesRepository.GetDetailsMovieDTO(MovieId);
+        //bool includeToken = false;
+        //if (authenticationState is not null)
+        //{
+        //    var authState = await authenticationState;
+        //    var user = authState?.User;
+        //    includeToken = user.Identity is not null && user.Identity.IsAuthenticated;
+        //}
+
+        
+        
+        var authState = await authenticationState;
+        var user = authState?.User;
+        bool includeToken = user.Identity.IsAuthenticated;
+
+        model = await moviesRepository.GetDetailsMovieDTO(MovieId, includeToken);
     
     } 
 

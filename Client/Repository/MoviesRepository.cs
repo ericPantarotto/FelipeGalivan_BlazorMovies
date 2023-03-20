@@ -31,9 +31,9 @@ namespace BlazorMovies.Client.Repository
         }
 
 
-        public async Task<DetailsMovieDTO?> GetDetailsMovieDTO(int id)
+        public async Task<DetailsMovieDTO?> GetDetailsMovieDTO(int id, bool includeToken = false)
         {
-            return await httpService.GetHelper<DetailsMovieDTO>($"{url}/{id}", includeToken: false);
+            return await httpService.GetHelper<DetailsMovieDTO>($"{url}/{id}", includeToken: includeToken);
         }
 
         public async Task<MovieUpdateDTO?> GetMovieForUpdate(int id)
