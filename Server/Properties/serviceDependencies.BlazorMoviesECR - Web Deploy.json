@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "identityapp1": {
+      "ignored": "true",
+      "type": "identityapp"
+    },
+    "mssql1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/blazormoviesserverdbecr/databases/BlazorMovies.Server_db",
+      "type": "mssql.azure",
+      "connectionId": "DefaultConnection",
+      "dynamicId": null
+    },
+    "storage1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/moviesapiecr",
+      "type": "storage.azure",
+      "connectionId": "AzureStorageConnection",
+      "dynamicId": null
+    }
+  }
+}
