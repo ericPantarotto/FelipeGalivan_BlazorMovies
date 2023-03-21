@@ -30,9 +30,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ClockSkew = TimeSpan.Zero
         });
 
-//builder.Services.AddScoped<IFileStorageService, AzureStorageService>();
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<IFileStorageService, InAppStorageService>();
+builder.Services.AddScoped<IFileStorageService, AzureStorageService>();
+//builder.Services.AddHttpContextAccessor();
+//builder.Services.AddScoped<IFileStorageService, InAppStorageService>();
 
 builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>
