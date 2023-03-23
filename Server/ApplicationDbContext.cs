@@ -17,6 +17,7 @@ namespace BlazorMovies.Server
             modelBuilder.Entity<MoviesActors>().HasKey(x => new { x.MovieId, x.PersonId });
             modelBuilder.Entity<MoviesGenres>().HasKey(x => new { x.MovieId, x.GenreId });
 
+            modelBuilder.Entity<Genre>().HasData(new Genre() { Id = 3, Name = "Test" });
             base.OnModelCreating(modelBuilder);
         }
 
