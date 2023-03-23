@@ -37,13 +37,6 @@ namespace BlazorMovies.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 3,
-                            Name = "Test"
-                        });
                 });
 
             modelBuilder.Entity("BlazorMovies.Shared.Entities.Movie", b =>
