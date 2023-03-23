@@ -1,10 +1,31 @@
-﻿<div class="my-component">
+﻿@using Microsoft.JSInterop;
+@implements IDisposable
+@inject IJSRuntime JS
+
+<div class="my-component">
     This component is defined in the <strong>BlazorMovies.Components</strong> library.
     <p>Created by: @Name - @Param1</p>
+    <p>Prompt value: @stringFromPrompt</p>
 </div>
 
+<button @onclick="HandlePrompt">Display Prompt</button>
 @code {
     public string Name { get; set; } = "Eric Carlier";
     [Parameter]
     public string Param1 { get; set; } = string.Empty;
+    private ExampleJsInterop? jsClass;
+    private string stringFromPrompt = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        jsClass = new(JS);
+        stringFromPrompt = string.Empty;
+    }
+
+    private async Task HandlePrompt()
+    {
+        stringFromPrompt = await jsClass!.Prompt("Prompt from RCL");
+    }
+
+    public void Dispose() => jsClass?.DisposeAsync();
 }
