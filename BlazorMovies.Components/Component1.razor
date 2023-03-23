@@ -1,0 +1,10 @@
+﻿<div class="my-component">
+    This component is defined in the <strong>BlazorMovies.Components</strong> library.
+    <p>Created by: @Name - @Param1</p>
+</div>
+
+@code {
+    public string Name { get; set; } = "Eric Carlier";
+    [Parameter]
+    public string Param1 { get; set; } = string.Empty;
+}
