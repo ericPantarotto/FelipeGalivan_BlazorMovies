@@ -2,8 +2,9 @@
 
 <h3>Routable Component</h3>
 
-@*The value is @Value*@
+The value is @ValueInt for @nameof(ValueInt) - The value is @ValueString for @nameof(ValueString)
 
 @code {
-    //[CascadingParameter(Name = "Value")] public int Value { get; set; }
+    [CascadingParameter(Name = "ValueInt")] public int ValueInt { get; set; }
+    [CascadingParameter(Name = "ValueString")] public string ValueString { get; set; } = string.Empty;
 }
