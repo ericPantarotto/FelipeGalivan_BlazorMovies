@@ -5,6 +5,7 @@ using BlazorMovies.Client.Helpers;
 using BlazorMovies.Client.Repository;
 using Microsoft.AspNetCore.Components.Authorization;
 using BlazorMovies.Client.Auth;
+using BlazorMovies.Components;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -27,6 +28,7 @@ static void ConfigureServices(IServiceCollection services)
     services.AddScoped<IRatingRepository, RatingRepository>();
     services.AddScoped<IDisplayMessage, DisplayMessage>();
     services.AddScoped<IUsersRepository, UserRepository>();
+    services.AddTransient<IExampleInterface, ExampleImplementation>();
 
 
     services.AddAuthorizationCore();

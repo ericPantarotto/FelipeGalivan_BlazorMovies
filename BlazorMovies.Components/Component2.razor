@@ -1,10 +1,12 @@
 @using Microsoft.JSInterop;
 @inject IJSRuntime js
+@inject IExampleInterface example
 
 <div class="my-component">
     This Blazor component is defined in the <strong>BlazorMovies.Components</strong> package.
     <p>Created by: @Name - @Param1</p>
     <p>Prompt value: @stringFromPrompt</p>
+    <p>Value from the interface: @example.GetValue()</p>
 </div>
 
 <br />
