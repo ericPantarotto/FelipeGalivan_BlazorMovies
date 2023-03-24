@@ -1,0 +1,26 @@
+﻿@page "/genre/create"
+@inject IGenreRepository genreRepository
+@inject NavigationManager navigationManager
+@attribute [Authorize]
+
+<h3>CreateGenre</h3>
+
+<GenreForm Genre="genre" OnValidSubmit="Create"/>
+
+@code {
+    private Genre genre= new(); 
+
+    private async Task Create()
+    {
+        try
+        {
+            await genreRepository.CreateGenre(genre);
+            navigationManager.NavigateTo("genres");
+        }
+        catch(Exception ex)
+        {
+            // ...
+            Console.WriteLine(ex.Message);
+        }
+    }
+}

@@ -1,5 +1,6 @@
 ﻿using BlazorMovies.Client.Helpers;
 using BlazorMovies.Shared.DTOs;
+using BlazorMovies.Shared.Repositories;
 
 namespace BlazorMovies.Client.Repository
 {

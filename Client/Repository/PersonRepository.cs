@@ -2,6 +2,7 @@
 using BlazorMovies.Shared.DTOs;
 //using BlazorMovies.Shared.DTOs;
 using BlazorMovies.Shared.Entities;
+using BlazorMovies.Shared.Repositories;
 
 namespace BlazorMovies.Client.Repository
 {

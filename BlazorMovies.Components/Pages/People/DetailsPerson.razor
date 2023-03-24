@@ -1,0 +1,48 @@
+﻿@page "/person/{PersonId:int}"
+@page "/person/{PersonId:int}/{PersonName}"
+@inject IPersonRepository peopleRepository
+
+@if (model is null)
+{
+    <text>Loading...</text>
+}
+else
+{
+    <h2>@model.Person?.Name <text> | </text> (@model.Person?.DateOfBirth!.Value.ToString("yyyy"))</h2>
+    <div>
+        <img src="@model?.Person?.Picture" alt="Picture" class="movie-poster" />
+    </div>
+    
+
+    <div>
+        <h3>Biography</h3>
+    </div>
+    <div class="form-markdown" style="margin-top: 10px;">
+        <div class="markdown-container">
+            <RenderMarkdown MarkdownContent="@model?.Person?.Biography" />
+        </div>
+    </div>
+
+    @if (movies?.Count >0)
+    {
+        <div>
+            <h3>List of Movies</h3>
+            <MoviesList Movies="movies" />  
+        </div>
+    }
+}
+
+@code {
+    [Parameter] public int PersonId { get; set; }
+    [Parameter] public string PersonName { get; set; } = string.Empty;
+    DetailsPersonDTO? model;
+    private List<Movie>? movies;
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        model = await peopleRepository.GetPersonDetailById(PersonId);
+        movies = model?.Movies!;
+    } 
+    
+}

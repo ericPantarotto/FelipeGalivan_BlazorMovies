@@ -1,0 +1,37 @@
+﻿@page "/"
+@page "/index"
+@inject IMoviesRepository moviesRepository
+
+<AuthorizeView>
+    <Authorized>
+        you are authorized, @context.User?.Identity?.Name - @context?.User?.Claims.FirstOrDefault(c => c.Type == "myValue")
+    </Authorized>
+    <NotAuthorized>
+        you are Not authorized
+    </NotAuthorized>
+</AuthorizeView>
+
+<div>
+    <h3>In Theaters</h3>
+    <MoviesList Movies="inTheaters" />
+</div>
+
+<div>
+    <h3>Upcoming Releases</h3>
+    <MoviesList Movies="upcomingReleases" />
+</div>
+
+
+@code {
+    private List<Movie>? movies = new();
+    private List<Movie>? inTheaters;
+    private List<Movie>? upcomingReleases;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await moviesRepository.GetIndexPageDTO();
+        inTheaters = response?.InTheaters;
+        upcomingReleases = response?.UpcomingReleases;
+    }
+
+} 

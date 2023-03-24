@@ -1,6 +1,7 @@
-﻿using BlazorMovies.Client.Helpers;
-using BlazorMovies.Client.Repository;
+﻿using BlazorMovies.Components.Helpers;
+using BlazorMovies.Shared.Auth;
 using BlazorMovies.Shared.DTOs;
+using BlazorMovies.Shared.Repositories;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using System.IdentityModel.Tokens.Jwt;

@@ -1,6 +1,7 @@
 ﻿using BlazorMovies.Client.Helpers;
 using BlazorMovies.Shared.Entities;
-    
+using BlazorMovies.Shared.Repositories;
+
 namespace BlazorMovies.Client.Repository
 {
     public class GenreRepository : IGenreRepository

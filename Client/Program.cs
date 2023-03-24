@@ -2,10 +2,14 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using BlazorMovies.Client;
 using BlazorMovies.Client.Helpers;
-using BlazorMovies.Client.Repository;
 using Microsoft.AspNetCore.Components.Authorization;
 using BlazorMovies.Client.Auth;
 using BlazorMovies.Components;
+using BlazorMovies.Shared.Repositories;
+using BlazorMovies.Components.Helpers;
+using BlazorMovies.Client.Repository;
+using BlazorMovies.Components.Auth;
+using BlazorMovies.Shared.Auth;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
