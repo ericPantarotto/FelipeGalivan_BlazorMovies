@@ -4,6 +4,7 @@
 
 <Router AppAssembly="@typeof(App).Assembly" OnNavigateAsync="OnNavigateAsync"
     AdditionalAssemblies="lazyLoadedAssemblies">
+    
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
             <Authorizing>
@@ -34,5 +35,6 @@
                 new List<string> { "MathNet.Numerics.dll" });
             lazyLoadedAssemblies.AddRange(assemblies);
         }
+        lazyLoadedAssemblies.Add(typeof(Component1).Assembly);
     }
 }
