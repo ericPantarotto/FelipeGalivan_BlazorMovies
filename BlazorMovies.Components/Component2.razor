@@ -1,0 +1,26 @@
+@using Microsoft.JSInterop;
+@inject IJSRuntime js
+
+<div class="my-component">
+    This Blazor component is defined in the <strong>BlazorMovies.Components</strong> package.
+    <p>Created by: @Name - @Param1</p>
+    <p>Prompt value: @stringFromPrompt</p>
+</div>
+
+<br />
+<button @onclick="HandlePrompt">Display prompt</button>
+
+@code {
+    public string Name { get; set; } = "Felipe GaviSchtrumpf";
+    [Parameter] public string Param1 { get; set; } = string.Empty;
+    private string stringFromPrompt = string.Empty;
+    
+    protected override void OnInitialized()
+    {
+        stringFromPrompt = string.Empty;
+    }
+    private async Task HandlePrompt()
+    {
+        stringFromPrompt = await js.Prompt("prompt from RCL");
+    }
+}
