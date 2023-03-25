@@ -1,3 +1,4 @@
+using BlazorMovies.Components.Helpers;
 using BlazorMovies.ServerSide.Areas.Identity;
 using BlazorMovies.ServerSide.Data;
 using Microsoft.AspNetCore.Components;
@@ -20,6 +21,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddTransient<IDisplayMessage, DisplayMessage>();
 
 var app = builder.Build();
 
