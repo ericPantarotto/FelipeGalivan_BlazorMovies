@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-@inject TokenRenewer tokenRenewer
+@*@inject TokenRenewer tokenRenewer*@
 @inject IJSRuntime js
 @inject NavigationManager navigationManager
 
@@ -23,11 +23,11 @@
 @code{
     [CascadingParameter] public Task<AuthenticationState>? AuthenticationState { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        await js.InitializeInactivityTimer(DotNetObjectReference.Create(this));
-        tokenRenewer.Initiate();
-    }
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    await js.InitializeInactivityTimer(DotNetObjectReference.Create(this));
+    //    tokenRenewer.Initiate();
+    //}
 
     [JSInvokable]
     public async Task Logout()

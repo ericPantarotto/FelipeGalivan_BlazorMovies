@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace BlazorMovies.Server.Migrations
+namespace BlazorMovies.SharedBackend.Migrations
 {
     /// <inheritdoc />
     public partial class RemoveExtraColumn : Migration

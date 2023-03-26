@@ -2,6 +2,8 @@
 using BlazorMovies.Server.Helpers;
 using BlazorMovies.Shared.DTOs;
 using BlazorMovies.Shared.Entities;
+using BlazorMovies.Shared.Repositories;
+using BlazorMovies.SharedBackend;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,17 +18,20 @@ namespace BlazorMovies.Server.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly ApplicationDbContext context;
+        private readonly IMoviesRepository moviesRepository;
         private readonly IFileStorageService fileStorageService;
         private readonly UserManager<IdentityUser> userManager;
         private readonly IMapper mapper;
         private readonly string containerName = "movies";
 
         public MoviesController(ApplicationDbContext context, 
+            IMoviesRepository moviesRepository,
             IFileStorageService fileStorageService,
             IMapper mapper,
             UserManager<IdentityUser> userManager)
         {
             this.context = context;
+            this.moviesRepository = moviesRepository;
             this.fileStorageService = fileStorageService;
             this.mapper = mapper;
             this.userManager = userManager;
@@ -34,29 +39,31 @@ namespace BlazorMovies.Server.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<IndexPageDTO>> Get()
+        public async Task<ActionResult<IndexPageDTO?>> Get()
         {
-            int limit = 6;
+            //int limit = 6;
 
-            var moviesInTheaters = await context.Movies
-                .Where(x => x.InTheaters).Take(limit)
-                .OrderByDescending(x => x.ReleaseDate)
-                .ToListAsync();
+            //var moviesInTheaters = await context.Movies
+            //    .Where(x => x.InTheaters).Take(limit)
+            //    .OrderByDescending(x => x.ReleaseDate)
+            //    .ToListAsync();
 
-            DateTime todaysDate = DateTime.Today;
+            //DateTime todaysDate = DateTime.Today;
 
-            var upcomingReleases = await context.Movies
-                .Where(x => x.ReleaseDate >= todaysDate)
-                .OrderBy(x => x.ReleaseDate).Take(limit)
-                .ToListAsync();
+            //var upcomingReleases = await context.Movies
+            //    .Where(x => x.ReleaseDate >= todaysDate)
+            //    .OrderBy(x => x.ReleaseDate).Take(limit)
+            //    .ToListAsync();
 
-            IndexPageDTO response = new() 
-            {
-                InTheaters = moviesInTheaters,
-                UpcomingReleases = upcomingReleases
-            };
+            //IndexPageDTO response = new() 
+            //{
+            //    InTheaters = moviesInTheaters,
+            //    UpcomingReleases = upcomingReleases
+            //};
 
-            return response;
+            //return response;
+
+            return await moviesRepository.GetIndexPageDTO();
 
         }
 

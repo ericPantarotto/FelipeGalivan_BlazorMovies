@@ -1,6 +1,10 @@
+using BlazorMovies.Components.Auth;
 using BlazorMovies.Components.Helpers;
 using BlazorMovies.ServerSide.Areas.Identity;
-using BlazorMovies.ServerSide.Data;
+using BlazorMovies.Shared.Auth;
+using BlazorMovies.Shared.Repositories;
+using BlazorMovies.SharedBackend;
+using BlazorMovies.SharedBackend.Repositories;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -20,8 +24,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddTransient<IDisplayMessage, DisplayMessage>();
+
+builder.Services.AddBlazorMovies();
 
 var app = builder.Build();
 
@@ -33,7 +38,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
