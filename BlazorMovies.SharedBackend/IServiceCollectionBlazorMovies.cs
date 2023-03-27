@@ -11,7 +11,7 @@ namespace BlazorMovies.SharedBackend
         public static IServiceCollection AddBlazorMovies(this IServiceCollection services)
         {
             services.AddScoped<IMoviesRepository, MoviesRepository>();
-            //services.AddScoped<IGenreRepository, GenresRepository>();
+            services.AddScoped<IGenreRepository, GenresRepository>();
             //services.AddScoped<IPersonRepository, PersonRepository>();
             //services.AddScoped<IRatingRepository, RatingRepository>();
             //services.AddScoped<IUsersRepository, UsersRepository>();

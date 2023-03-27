@@ -1,10 +1,6 @@
 ﻿using BlazorMovies.Shared.Entities;
 using BlazorMovies.Shared.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlazorMovies.SharedBackend.Repositories
 {
@@ -17,12 +13,12 @@ namespace BlazorMovies.SharedBackend.Repositories
             this.context = context;
         }
 
-        public async Task<List<Genre>> GetGenres()
+        public async Task<List<Genre>?> GetGenres()
         {
             return await context.Genres.ToListAsync();
         }
 
-        public async Task<Genre> GetGenre(int id)
+        public async Task<Genre?> GetGenre(int id)
         {
             return await context.Genres.FindAsync(id);
         }
@@ -42,7 +38,7 @@ namespace BlazorMovies.SharedBackend.Repositories
         public async Task DeleteGenre(int Id)
         {
             var genre = await GetGenre(Id);
-            context.Remove(genre);
+            context.Remove(genre!);
             await context.SaveChangesAsync();
         }
     }
