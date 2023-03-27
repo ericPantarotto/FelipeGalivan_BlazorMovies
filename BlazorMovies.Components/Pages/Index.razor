@@ -27,11 +27,15 @@
     private List<Movie>? inTheaters;
     private List<Movie>? upcomingReleases;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var response = await moviesRepository.GetIndexPageDTO();
-        inTheaters = response?.InTheaters;
-        upcomingReleases = response?.UpcomingReleases;
+        if (firstRender)
+        {
+            var response = await moviesRepository.GetIndexPageDTO();
+            inTheaters = response?.InTheaters;
+            upcomingReleases = response?.UpcomingReleases;
+            StateHasChanged();
+        }
     }
 
 } 
