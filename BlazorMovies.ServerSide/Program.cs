@@ -1,15 +1,10 @@
-using BlazorMovies.Components.Auth;
 using BlazorMovies.Components.Helpers;
 using BlazorMovies.ServerSide.Areas.Identity;
-using BlazorMovies.Shared.Auth;
-using BlazorMovies.Shared.Repositories;
+using BlazorMovies.ServerSide.Helpers;
 using BlazorMovies.SharedBackend;
-using BlazorMovies.SharedBackend.Repositories;
-using Microsoft.AspNetCore.Components;
+using BlazorMovies.SharedBackend.Helpers;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,14 +14,17 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-builder.Services.AddTransient<IDisplayMessage, DisplayMessage>();
 
+builder.Services.AddTransient<IDisplayMessage, DisplayMessage>();
 builder.Services.AddBlazorMovies();
+builder.Services.AddScoped<IAuthenticationStateService, AuthenticationStateServiceServerSide>();
+
+
 
 var app = builder.Build();
 

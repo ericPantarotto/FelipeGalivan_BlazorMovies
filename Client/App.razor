@@ -2,36 +2,38 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Services
 @using System.Reflection
 
-<CascadingValue Value= "7" Name="ValueInt">
-    <CascadingValue Value="@StringValue" Name="ValueString">
 
-        <Router AppAssembly="@typeof(App).Assembly" OnNavigateAsync="OnNavigateAsync"
-                AdditionalAssemblies="lazyLoadedAssemblies">
+<CascadingValue Value="AppMode.WebAssembly">
+    <CascadingValue Value= "7" Name="ValueInt">
+        <CascadingValue Value="@StringValue" Name="ValueString">
 
-            <Found Context="routeData">
-                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-                    <Authorizing>
-                        <text>Custom Authorizing</text>
-                    </Authorizing>
-                    <NotAuthorized>
-                        <text>Custom not authorized ❌</text>
-                    </NotAuthorized>
-                </AuthorizeRouteView>
-                <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-            </Found>
-            <NotFound>
-                <CascadingAuthenticationState>
-                    <PageTitle>Not found</PageTitle>
-                    <LayoutView Layout="@typeof(MainLayout)">
-                        <CustomNotFound />
-                    </LayoutView>
-                </CascadingAuthenticationState>
-            </NotFound>
-        </Router>
+            <Router AppAssembly="@typeof(App).Assembly" OnNavigateAsync="OnNavigateAsync"
+                    AdditionalAssemblies="lazyLoadedAssemblies">
 
+                <Found Context="routeData">
+                    <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                        <Authorizing>
+                            <text>Custom Authorizing</text>
+                        </Authorizing>
+                        <NotAuthorized>
+                            <text>Custom not authorized ❌</text>
+                        </NotAuthorized>
+                    </AuthorizeRouteView>
+                    <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+                </Found>
+                <NotFound>
+                    <CascadingAuthenticationState>
+                        <PageTitle>Not found</PageTitle>
+                        <LayoutView Layout="@typeof(MainLayout)">
+                            <CustomNotFound />
+                        </LayoutView>
+                    </CascadingAuthenticationState>
+                </NotFound>
+            </Router>
+
+        </CascadingValue>
     </CascadingValue>
 </CascadingValue>
-
 
 
 @code {

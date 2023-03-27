@@ -2,7 +2,7 @@
 using BlazorMovies.Shared.DTOs;
 using BlazorMovies.Shared.Entities;
 using BlazorMovies.Shared.Repositories;
-//using BlazorMovies.SharedBackend.Helpers;
+using BlazorMovies.SharedBackend.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,19 +15,19 @@ namespace BlazorMovies.SharedBackend.Repositories
     public class MoviesRepository : IMoviesRepository
     {
         private readonly ApplicationDbContext context;
-        //private readonly IAuthenticationStateService authenticationStateService;
+        private readonly IAuthenticationStateService authenticationStateService;
         //private readonly IFileStorageService fileStorageService;
         //private readonly IMapper mapper;
         private readonly string containerName = "movies";
 
-        public MoviesRepository(ApplicationDbContext context
-            //IAuthenticationStateService authenticationStateService,
+        public MoviesRepository(ApplicationDbContext context,
+            IAuthenticationStateService authenticationStateService
             //IFileStorageService fileStorageService,
             //IMapper mapper
             )
         {
             this.context = context;
-            //this.authenticationStateService = authenticationStateService;
+            this.authenticationStateService = authenticationStateService;
             //this.fileStorageService = fileStorageService;
             //this.mapper = mapper;
         }
@@ -118,6 +118,7 @@ namespace BlazorMovies.SharedBackend.Repositories
 
         public async Task<IndexPageDTO?> GetIndexPageDTO()
         {
+            //Console.WriteLine(await authenticationStateService.GetCurrentUserId());
             var limit = 6;
 
             var moviesInTheaters = await context.Movies

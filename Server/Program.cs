@@ -1,6 +1,7 @@
 using BlazorMovies.Server.Helpers;
 using BlazorMovies.Shared.Repositories;
 using BlazorMovies.SharedBackend;
+using BlazorMovies.SharedBackend.Helpers;
 using BlazorMovies.SharedBackend.Repositories;
 using MathNet.Numerics;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -38,6 +39,7 @@ builder.Services.AddScoped<IFileStorageService, AzureStorageService>();
 //builder.Services.AddScoped<IFileStorageService, InAppStorageService>();
 
 builder.Services.AddBlazorMovies();
+builder.Services.AddScoped<IAuthenticationStateService, AuthenticationStateServiceWebAssembly>();
 
 builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>
