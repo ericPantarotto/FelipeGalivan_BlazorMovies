@@ -1,4 +1,6 @@
-﻿namespace BlazorMovies.Server.Helpers
+﻿using BlazorMovies.SharedBackend.Helpers;
+
+namespace BlazorMovies.Server.Helpers
 {
     public class InAppStorageService : IFileStorageService
     {

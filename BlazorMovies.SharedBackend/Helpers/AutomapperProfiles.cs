@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using BlazorMovies.Shared.Entities;
 
-namespace BlazorMovies.Server.Helpers
+namespace BlazorMovies.SharedBackend.Helpers
 {
-    public class AutomapperProfiles: Profile
+    public class AutomapperProfiles : Profile
     {
         public AutomapperProfiles()
         {

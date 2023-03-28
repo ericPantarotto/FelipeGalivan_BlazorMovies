@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Blobs;
+using Microsoft.Extensions.Configuration;
 
-namespace BlazorMovies.Server.Helpers
+namespace BlazorMovies.SharedBackend.Helpers
 {
     public class AzureStorageService : IFileStorageService
     {
@@ -25,7 +26,7 @@ namespace BlazorMovies.Server.Helpers
             await blob.DeleteIfExistsAsync();
         }
 
-        public async Task<string> EditFile(byte[] content, string extension, 
+        public async Task<string> EditFile(byte[] content, string extension,
             string containerName, string fileRoute)
         {
             await DeleteFile(fileRoute, containerName);

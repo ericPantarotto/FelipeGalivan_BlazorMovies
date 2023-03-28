@@ -2,11 +2,12 @@
 using BlazorMovies.Server.Helpers;
 using BlazorMovies.Shared.DTOs;
 using BlazorMovies.Shared.Entities;
-using BlazorMovies.SharedBackend;
+using BlazorMovies.Shared.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace BlazorMovies.Server.Controllers
 {
@@ -15,47 +16,41 @@ namespace BlazorMovies.Server.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles ="Admin")]
     public class PeopleController : ControllerBase
     {
-        private readonly ApplicationDbContext context;
-        private readonly IFileStorageService fileStorageService;
-        private readonly IMapper mapper;
+        private readonly IPersonRepository personRepository;
 
-        public PeopleController(ApplicationDbContext context,
-            IFileStorageService fileStorageService,
-            IMapper mapper)
+        public PeopleController(IPersonRepository personRepository)
         {
-            this.context = context;
-            this.fileStorageService = fileStorageService;
-            this.mapper = mapper;
+            this.personRepository = personRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Person>>> Get()
+        public async Task<ActionResult<List<Person>?>> Get()
         {
-            return await context.People.ToListAsync();
+            return await personRepository.GetPeople();
         }
         [HttpGet]
         [Route("paginate")]
         public async Task<ActionResult<List<Person>>> Get([FromQuery] PaginationDTO paginationDTO)
         {
-            var queryable = context.People.AsQueryable();
-            await HttpContext.InsertPaginationParametersInResponse(queryable, paginationDTO.RecordsPerPage);
-            return await queryable.Paginate(paginationDTO).ToListAsync();
+            var paginatedResponse = await personRepository.GetPeople(paginationDTO);
+
+            HttpContext.InsertPaginationParametersInResponse(paginatedResponse.TotalAmountPages);
+
+            return paginatedResponse.Response!;
+
         }
 
         [HttpGet("search/{searchText}")]
-        public async Task<ActionResult<List<Person>>> FilterByName(string searchText)
+        public async Task<ActionResult<List<Person>?>> FilterByName(string searchText)
         {
-            if (string.IsNullOrWhiteSpace(searchText)) { return new List<Person>(); }
-            return await context.People.Where(x => x.Name.Contains(searchText))
-                .Take(5)
-                .ToListAsync();
+            return await personRepository.GetPeopleByName(searchText);
         }
 
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> Get(int id)
         {
-            Person? person = await context.People.FirstOrDefaultAsync(x => x.Id == id);
+            Person? person = await personRepository.GetPersonById(id);
             if (person is null) { return NotFound(); }
             return person;
         }
@@ -64,18 +59,10 @@ namespace BlazorMovies.Server.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<DetailsPersonDTO>> GetDetail(int id)
         {
-            Person? person = await context.People.FirstOrDefaultAsync(x => x.Id == id);
-            if (person is null) { return NotFound(); }
+            DetailsPersonDTO? detailPersonDTO = await personRepository.GetPersonDetailById(id);
+            if (detailPersonDTO is null) { return NotFound(); }
 
-            List<Movie?>? movies = await context.MoviesActors
-                .Where(ma => ma.PersonId == id)
-                .OrderBy(x => x.Movie!.Title)
-                .Select(m => m.Movie)
-                .ToListAsync();
-
-            DetailsPersonDTO detailsPersonDTO = new() { Person = person, Movies = movies };
-
-            return detailsPersonDTO;
+            return detailPersonDTO;
         }
 
         //[HttpGet("search/{searchText}")]
@@ -90,53 +77,31 @@ namespace BlazorMovies.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> Post(Person person)
         {
-            if (!string.IsNullOrWhiteSpace(person.Picture))
-            {
-                var personPicture = Convert.FromBase64String(person.Picture);
-                person.Picture = await fileStorageService.SaveFile(personPicture, "jpg", "people");
-            }
-
-            context.Add(person);
-            await context.SaveChangesAsync();
+            await personRepository.CreatePerson(person);
             return person.Id;
         }
 
         [HttpPut]
         public async Task<ActionResult> Put(Person person)
         {
-            Person? personDB = await context.People.FirstOrDefaultAsync(x => x.Id == person.Id);
+            var personDB = await personRepository.GetPersonById(person.Id);
 
             if (personDB is null) { return NotFound(); }
 
-            personDB = mapper.Map(person, personDB);
-
-            if (!string.IsNullOrWhiteSpace(person.Picture))
-            {
-                byte[] personPicture = Convert.FromBase64String(person.Picture);
-
-                personDB.Picture = await fileStorageService.EditFile(
-                    content: personPicture,
-                    extension: "jpg",
-                    containerName: "people",
-                    fileRoute: personDB?.Picture!);
-            }
-
-            await context.SaveChangesAsync();
+            await personRepository.UpdatePerson(person);
             return NoContent();
-
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var person = await context.People.FirstOrDefaultAsync(x => x.Id == id);
+            var person = await personRepository.GetPersonById(id);
             if (person is null)
             {
                 return NotFound();
             }
 
-            context.Remove(person);
-            await context.SaveChangesAsync();
+            await personRepository.DeletePerson(id);
             return NoContent();
         }
     }

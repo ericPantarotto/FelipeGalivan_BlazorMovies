@@ -1,4 +1,4 @@
-﻿namespace BlazorMovies.Server.Helpers
+﻿namespace BlazorMovies.SharedBackend.Helpers
 {
     public interface IFileStorageService
     {

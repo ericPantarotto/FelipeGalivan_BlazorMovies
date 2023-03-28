@@ -38,7 +38,7 @@
 
 @code {
     List<Person>? People = new();
-    PaginationDTO paginationDTO = new() { };
+    PaginationDTO paginationDTO = new() { RecordsPerPage = 2 };
     private int totalAmountPages;
 
     protected override async Task OnInitializedAsync()

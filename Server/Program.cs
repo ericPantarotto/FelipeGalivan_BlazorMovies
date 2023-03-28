@@ -34,7 +34,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ClockSkew = TimeSpan.Zero
         });
 
-builder.Services.AddScoped<IFileStorageService, AzureStorageService>();
+//builder.Services.AddScoped<IFileStorageService, AzureStorageService>();
 //builder.Services.AddHttpContextAccessor();
 //builder.Services.AddScoped<IFileStorageService, InAppStorageService>();
 
@@ -45,7 +45,7 @@ builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-builder.Services.AddAutoMapper(profileAssemblyMarkerTypes: typeof(Program));
+//builder.Services.AddAutoMapper(profileAssemblyMarkerTypes: typeof(Program));
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
