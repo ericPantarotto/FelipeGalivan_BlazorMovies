@@ -61,15 +61,19 @@
     private int totalAmountPages;
     private List<Genre>? Genres = new();
 
-    protected async override Task OnInitializedAsync()
+    protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        var queryStrings = navigationManager.GetQueryStrings(navigationManager.Uri);
-        Genres = await genreRepository.GetGenres();
-        if (queryStrings != null)
+        if (firstRender)
         {
-            FillFilterWithQueryStrings(queryStrings);
+            var queryStrings = navigationManager.GetQueryStrings(navigationManager.Uri);
+            Genres = await genreRepository.GetGenres();
+            if (queryStrings != null)
+            {
+                FillFilterWithQueryStrings(queryStrings);
+            }
+            await LoadMovies();
+            StateHasChanged();
         }
-        await LoadMovies();
     }
 
     private async Task SearchForMovies()
