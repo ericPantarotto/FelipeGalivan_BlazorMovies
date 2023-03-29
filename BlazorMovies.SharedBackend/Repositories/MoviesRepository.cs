@@ -183,7 +183,7 @@ namespace BlazorMovies.SharedBackend.Repositories
                     .Where(x => x.MoviesGenres.Select(y => y.GenreId)
                     .Contains(filterMoviesDTO.GenreId));
             }
-            if (filterMoviesDTO.OrderByVotes)
+            if (filterMoviesDTO.OrderByVotes && moviesQueryable.Any())
             {
                 var voteAverages = context.MovieRatings
                     .GroupBy(x => x.MovieId)
