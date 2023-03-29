@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -23,7 +23,11 @@ builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuth
 builder.Services.AddTransient<IDisplayMessage, DisplayMessage>();
 builder.Services.AddBlazorMovies();
 builder.Services.AddScoped<IAuthenticationStateService, AuthenticationStateServiceServerSide>();
-
+builder.Services.AddSignalR().AddAzureSignalR(options =>
+{
+    options.ConnectionString = builder.Configuration.GetConnectionString("signalR");
+    options.ServerStickyMode = Microsoft.Azure.SignalR.ServerStickyMode.Required;
+});
 
 
 var app = builder.Build();
