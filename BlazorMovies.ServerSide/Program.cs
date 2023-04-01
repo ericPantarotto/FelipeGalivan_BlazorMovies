@@ -50,7 +50,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-var supportedCultures = new[] { "en-US", "es-CL" };
+var supportedCultures = new[] { "en-US", "es-CL", "en", "fr-FR" };
 var localizationOptions = new RequestLocalizationOptions()
     .SetDefaultCulture(supportedCultures[0])
     .AddSupportedCultures(supportedCultures)
