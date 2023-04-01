@@ -29,6 +29,7 @@ builder.Services.AddSignalR().AddAzureSignalR(options =>
     options.ServerStickyMode = Microsoft.Azure.SignalR.ServerStickyMode.Required;
 });
 
+builder.Services.AddLocalization();
 
 var app = builder.Build();
 
@@ -48,6 +49,14 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+var supportedCultures = new[] { "en-US", "es-CL" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+app.UseRequestLocalization(localizationOptions);
 
 app.UseAuthorization();
 

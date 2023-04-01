@@ -23,6 +23,7 @@ await builder.Build().RunAsync();
 
 static void ConfigureServices(IServiceCollection services)
 {
+    services.AddLocalization();
     services.AddTransient<IRepository, RepositoryInMemory>();
     services.AddScoped<IHttpService, HttpService>();
     services.AddScoped<IGenreRepository, GenreRepository>();

@@ -1,6 +1,7 @@
 ﻿@page "/"
 @page "/index"
 @inject IMoviesRepository moviesRepository
+@inject IStringLocalizer<Resource> localizer
 
 <AuthorizeView>
     <Authorized>
@@ -12,12 +13,12 @@
 </AuthorizeView>
 
 <div>
-    <h3>In Theaters</h3>
+    <h3>@localizer["intheathers"]</h3>
     <MoviesList Movies="inTheaters" />
 </div>
 
 <div>
-    <h3>Upcoming Releases</h3>
+    <h3>@localizer["upcomingreleases"]</h3>
     <MoviesList Movies="upcomingReleases" />
 </div>
 
