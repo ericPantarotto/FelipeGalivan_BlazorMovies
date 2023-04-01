@@ -10,6 +10,8 @@ using BlazorMovies.Components.Helpers;
 using BlazorMovies.Client.Repository;
 using BlazorMovies.Components.Auth;
 using BlazorMovies.Shared.Auth;
+using Microsoft.JSInterop;
+using System.Globalization;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -19,7 +21,23 @@ builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri(build
 
 ConfigureServices(builder.Services);
 
-await builder.Build().RunAsync();
+var host = builder.Build();
+
+var js = host.Services.GetRequiredService<IJSRuntime>();
+var culture = await js.InvokeAsync<string>("getFromLocalStorage", "culture");
+
+CultureInfo selectedCulture = new("en-US");
+
+if (culture is not null)
+{
+    selectedCulture = new CultureInfo(culture);
+}
+
+CultureInfo.DefaultThreadCurrentCulture = selectedCulture;
+CultureInfo.DefaultThreadCurrentUICulture = selectedCulture;
+
+await host.RunAsync();
+//await builder.Build().RunAsync();
 
 static void ConfigureServices(IServiceCollection services)
 {

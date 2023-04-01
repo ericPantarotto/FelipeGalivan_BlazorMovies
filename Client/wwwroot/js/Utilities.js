@@ -29,3 +29,12 @@ function initializeInactivityTimer(dotnetHelper) {
     }
 
 }
+
+
+function setInLocalStorage(key, value) {
+    localStorage[key] = value;
+}
+
+function getFromLocalStorage(key) {
+    return localStorage[key];
+}
