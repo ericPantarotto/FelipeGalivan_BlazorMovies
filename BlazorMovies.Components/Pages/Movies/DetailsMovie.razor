@@ -23,8 +23,8 @@ else
             @linkGenre(model.Genres[i])
         }
     }
-    @*<text> | </text> <span>@model.Movie?.ReleaseDate!.Value.ToString("dd MMM yyyy")</span>*@
-    <text> | </text> <span>@model.Movie?.ReleaseDate!.Value.ToLongDateString()</span>
+    <text> | </text> <span>@model.Movie?.ReleaseDate!.Value.ToString("dd MMM yyyy")</span>
+    @*<text> | </text> <span>@model.Movie?.ReleaseDate!.Value.ToLongDateString()</span>*@
     <text> | Average: </text> @model.AverageVote.ToString("0.#") <text>/5 | Your vote: </text>
     <text> | Price: </text> <span>@price.ToString("C")</span>
     <Rating MaximumRating="5" VotedRating="model.UserVote" OnVote="OnVote" />

@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using System.Globalization;
+@inherits LayoutComponentBase
 @inject TokenRenewer tokenRenewer
 @inject IJSRuntime js
 @inject NavigationManager navigationManager
@@ -27,6 +28,8 @@
     {
         await js.InitializeInactivityTimer(DotNetObjectReference.Create(this));
         tokenRenewer.Initiate();
+
+        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
     }
 
     [JSInvokable]
